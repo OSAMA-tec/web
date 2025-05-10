@@ -80,8 +80,6 @@ export default function HeroSection() {
       <motion.div 
         className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 1.2 }}
         animate={{
           y: [0, 10, 0],
           opacity: 1,
@@ -90,6 +88,7 @@ export default function HeroSection() {
           duration: 1.5,
           repeat: Infinity,
           repeatType: "loop",
+          delay: 1.2
         }}
       >
         <a 

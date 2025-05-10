@@ -92,7 +92,7 @@
   }
   
   .card-hover {
-    @apply transition-all duration-300 ease-in-out;
+    @apply transition-all duration-500 ease-in-out;
   }
   
   .card-hover:hover {
@@ -111,8 +111,160 @@
     animation: progressAnim 1.5s ease-out forwards;
   }
   
+  /* Scroll reveal animations */
+  .reveal {
+    position: relative;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 1s ease;
+  }
+  
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Stagger children animations */
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+  }
+  
+  .stagger-children.active > *:nth-child(1) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.1s;
+  }
+  
+  .stagger-children.active > *:nth-child(2) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s;
+  }
+  
+  .stagger-children.active > *:nth-child(3) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.3s;
+  }
+  
+  .stagger-children.active > *:nth-child(4) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.4s;
+  }
+  
+  .stagger-children.active > *:nth-child(5) {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.5s;
+  }
+  
+  /* Zoom effect on scroll */
+  .zoom-in-scroll {
+    transform: scale(0.95);
+    transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  
+  .zoom-in-scroll.active {
+    transform: scale(1);
+  }
+  
+  /* Blur-in effect */
+  .blur-in {
+    filter: blur(10px);
+    opacity: 0;
+    transition: all 1s ease;
+  }
+  
+  .blur-in.active {
+    filter: blur(0);
+    opacity: 1;
+  }
+  
+  /* Rotating card effect */
+  .rotate-card {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+  
+  .rotate-card:hover .card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+  
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+  }
+  
+  .card-back {
+    transform: rotateY(180deg);
+  }
+  
+  /* Glow effect on hover */
+  .glow-on-hover {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  
+  .glow-on-hover::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, transparent 0%, #64ffda 25%, #8b5cf6 50%, transparent 75%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    animation: rotate 4s linear infinite;
+  }
+  
+  .glow-on-hover:hover::before {
+    opacity: 0.15;
+  }
+  
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Progress animation */
   @keyframes progressAnim {
     from { width: 0; }
     to { width: var(--progress); }
+  }
+  
+  /* Text reveal animation */
+  .text-reveal {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+  }
+  
+  .text-reveal span {
+    display: inline-block;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all 0.5s ease;
+  }
+  
+  .text-reveal.active span {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

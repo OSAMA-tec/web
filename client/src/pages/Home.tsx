@@ -4,12 +4,16 @@ import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ContactSection from "@/components/ContactSection";
 import { useEffect } from "react";
+import useScrollReveal from "@/lib/useScrollReveal";
 
 export default function Home() {
   // Set title and meta description on mount
   useEffect(() => {
     document.title = "Osama Hashmi - Full Stack Developer";
   }, []);
+
+  // Initialize scroll animations
+  useScrollReveal();
 
   return (
     <main>

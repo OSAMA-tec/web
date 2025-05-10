@@ -41,27 +41,17 @@ export default function ProjectsSection() {
   return (
     <section id="projects" className="py-20 bg-gradient-to-b from-[#121212] to-[#0a192f]" ref={sectionRef}>
       <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
-          className="text-center"
-        >
+        <div className="text-center mb-12 reveal once">
           <h2 className="text-3xl font-bold font-poppins mb-2 text-center">
             <span className="text-[#64ffda]">03.</span> Projects
           </h2>
           <div className="h-1 w-32 bg-[#8b5cf6]/50 mb-6 mx-auto"></div>
-          <p className="text-center text-[#e6f1ff]/70 max-w-2xl mx-auto mb-12">
+          <p className="text-center text-[#e6f1ff]/70 max-w-2xl mx-auto">
             Here are some of my recent projects that showcase my skills and problem-solving abilities. Each project represents unique challenges that I've overcome.
           </p>
-        </motion.div>
+        </div>
         
-        <motion.div 
-          className="flex justify-center mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
+        <div className="flex justify-center mb-8 blur-in once">
           <div className="flex flex-wrap gap-4 justify-center">
             {filterCategories.map((category, index) => (
               <button 
@@ -77,7 +67,7 @@ export default function ProjectsSection() {
               </button>
             ))}
           </div>
-        </motion.div>
+        </div>
         
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -88,14 +78,15 @@ export default function ProjectsSection() {
           {filteredProjects.map((project, index) => (
             <motion.div 
               key={index}
-              className="project-card card-hover bg-[#1E1E2A] rounded-lg overflow-hidden shadow-lg"
+              className="project-card card-hover bg-[#1E1E2A] rounded-lg overflow-hidden shadow-lg reveal once"
               variants={childVariants}
+              style={{ transitionDelay: `${index * 0.1}s` }}
             >
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={project.image} 
                   alt={project.title} 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-all duration-700 hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#121212] to-transparent"></div>
                 <div className="absolute top-2 right-2 flex space-x-2">
@@ -115,7 +106,9 @@ export default function ProjectsSection() {
               </div>
               
               <div className="p-5">
-                <h3 className="text-xl font-semibold font-poppins mb-2">{project.title}</h3>
+                <h3 className="text-xl font-semibold font-poppins mb-2 text-reveal">
+                  <span>{project.title}</span>
+                </h3>
                 <p className="text-[#e6f1ff]/70 text-sm mb-4">
                   {project.description}
                 </p>
@@ -144,7 +137,7 @@ export default function ProjectsSection() {
                       </a>
                     )}
                   </div>
-                  <button className="px-3 py-1 border border-[#64ffda] text-[#64ffda] text-sm rounded hover:bg-[#64ffda]/10 transition-colors">
+                  <button className="px-3 py-1 border border-[#64ffda] text-[#64ffda] text-sm rounded hover:bg-[#64ffda]/10 transition-colors glow-on-hover">
                     View Details
                   </button>
                 </div>
