@@ -4,8 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import { useState, useEffect } from "react";
-import Terminal from "@/components/Terminal";
-import SocialFloaters from "@/components/SocialFloaters";
+import Terminal from "./components/Terminal";
+import SocialFloaters from "./components/SocialFloaters";
 import { useLocation } from "wouter";
 
 function Router() {
@@ -70,7 +70,7 @@ function App() {
       <Terminal 
         isActive={terminalActive} 
         onClose={() => setTerminalActive(false)}
-        onNavigate={(path) => {
+        onNavigate={(path: string) => {
           setLocation(path);
           setTerminalActive(false);
         }} 
