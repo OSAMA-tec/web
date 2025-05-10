@@ -143,7 +143,11 @@ export default function ThreeScene() {
         }
         
         // Adjust particle size based on scroll position
-        const scrollFactor = scrollY / 2000; // Normalize scroll effect
+        // Make sure we don't get negative sizes with scroll
+        const scrollFactor = Math.max(-0.8, scrollY / 2000); // Normalize and limit negative values
+        
+        // Calculate final particle size, ensure it's always positive
+        const finalSize = Math.max(0.1, particle.size * (1 + scrollFactor));
         
         // Draw particle with glow effect
         ctx.save();
@@ -156,8 +160,8 @@ export default function ThreeScene() {
         ctx.beginPath();
         ctx.arc(
           particle.x, 
-          particle.y + scrollOffset * (index % 5) * 0.1, // Parallax based on particle index
-          particle.size * (1 + scrollFactor),
+          particle.y + (scrollOffset * (index % 5) * 0.1), // Parallax based on particle index
+          finalSize, // Use our safe size value
           0, 
           Math.PI * 2
         );
