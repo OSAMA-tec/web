@@ -68,6 +68,87 @@
   html {
     @apply scroll-smooth;
   }
+  
+  /* Terminal styling */
+  .typing-animation {
+    width: 22ch;
+    animation: typing 1.5s steps(22), blink 0.5s step-end infinite alternate;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid #64ffda;
+  }
+  
+  @keyframes typing {
+    from { width: 0 }
+  }
+  
+  @keyframes blink {
+    50% { border-color: transparent }
+  }
+  
+  /* Loading bar animation */
+  .loading-bar {
+    width: 0%;
+    animation: loadingProgress 1.8s ease-in-out forwards;
+  }
+  
+  @keyframes loadingProgress {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    75% { width: 85%; }
+    100% { width: 100%; }
+  }
+  
+  /* 3D code effect for sections */
+  .code-block {
+    position: relative;
+    overflow: hidden;
+    font-family: monospace;
+    background: #1E1E2A;
+    border-radius: 0.5rem;
+    border-left: 4px solid #64ffda;
+  }
+  
+  .code-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: #121212;
+    border-bottom: 1px solid #2d2d3a;
+  }
+  
+  .code-block-content {
+    padding: 1rem;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  
+  .code-block .line-numbers {
+    position: absolute;
+    left: 0;
+    top: 2.5rem;
+    bottom: 0;
+    width: 2.5rem;
+    padding: 1rem 0;
+    text-align: center;
+    color: #64ffda50;
+    border-right: 1px solid #2d2d3a;
+    user-select: none;
+  }
+  
+  .code-block .code-content {
+    margin-left: 3.5rem;
+  }
+  
+  /* Code color highlighting */
+  .code-keyword { color: #ff79c6; }
+  .code-function { color: #50fa7b; }
+  .code-string { color: #f1fa8c; }
+  .code-comment { color: #6272a4; }
+  .code-number { color: #bd93f9; }
+  .code-tag { color: #ff5555; }
+  .code-property { color: #66d9ef; }
 }
 
 @layer utilities {
