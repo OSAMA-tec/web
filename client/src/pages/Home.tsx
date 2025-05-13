@@ -1,9 +1,12 @@
+
 import { useEffect, useState, useRef } from "react";
 import useScrollReveal from "@/lib/useScrollReveal";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { 
   Eye, Layers, Code, Database, Mail, Github, Linkedin, Twitter, X, 
-  MessageSquare, ChevronsRight, Terminal, Cpu, GitBranch, Coffee, Zap
+  MessageSquare, ChevronsRight, Terminal, Cpu, GitBranch, Coffee, Zap,
+  ChevronDown, Sparkles
 } from "lucide-react";
 
 // Code animation component for developer-themed sections
@@ -19,13 +22,14 @@ function CodeBlock({
   delay?: number;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
+  const isMobile = useIsMobile();
   
   return (
     <motion.div 
       className="code-block mb-8"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay }}
+      transition={{ duration: 0.7, delay: isMobile ? 0.1 : delay }}
       viewport={{ once: true, margin: "-100px" }}
     >
       <div className="code-block-header">
@@ -73,17 +77,18 @@ function ProjectCard({
   delay?: number;
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const isMobile = useIsMobile();
   
   return (
     <motion.div 
       className="relative group perspective-1000"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay }}
+      transition={{ duration: 0.5, delay: isMobile ? 0.1 : delay }}
       viewport={{ once: true, margin: "-100px" }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}
+      whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
     >
       {/* Terminal-like header */}
       <div className="absolute -top-5 left-0 right-0 bg-[#0a192f] rounded-t-lg border-t border-l border-r border-[#64ffda]/30 px-3 py-1 z-20 flex items-center">
@@ -100,7 +105,7 @@ function ProjectCard({
       <div 
         className={`
           bg-[#1E1E2A] rounded-lg overflow-hidden shadow-xl border border-[#64ffda]/30
-          transform transition-all duration-500 
+          transform transition-all duration-300 will-change-transform
           ${isHovered ? 'shadow-[0_10px_50px_-12px_rgba(100,255,218,0.25)]' : ''}
         `}
       >
@@ -110,8 +115,8 @@ function ProjectCard({
             alt={title} 
             className={`
               w-full h-full object-cover
-              transition-all duration-700 
-              ${isHovered ? 'scale-110 filter contrast-125 brightness-110' : ''}
+              transition-all duration-500 will-change-transform
+              ${isHovered ? 'scale-105 filter contrast-125 brightness-110' : ''}
             `}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1E1E2A] to-transparent"></div>
@@ -131,8 +136,8 @@ function ProjectCard({
                 className="text-xs px-2 py-1 rounded-full bg-[#0a192f]/80 backdrop-blur-sm text-[#64ffda] border border-[#64ffda]/30"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: delay + (index * 0.1) }}
-                whileHover={{ scale: 1.1, backgroundColor: "rgba(100, 255, 218, 0.2)" }}
+                transition={{ duration: 0.3, delay: isMobile ? 0.1 + (index * 0.05) : delay + (index * 0.1) }}
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(100, 255, 218, 0.2)" }}
               >
                 #{tag.toLowerCase().replace(/\s|\./g, '')}
               </motion.span>
@@ -226,14 +231,133 @@ function ProjectCard({
   );
 }
 
+// Skill card component with improved animations
+function SkillCard({ 
+  title, 
+  icon, 
+  skills, 
+  delay = 0 
+}: { 
+  title: string; 
+  icon: React.ReactNode; 
+  skills: { name: string; level: string; percentage: number; color: string }[];
+  delay?: number;
+}) {
+  const isMobile = useIsMobile();
+  
+  return (
+    <motion.div
+      className="perspective-1000"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: isMobile ? 0.1 : delay }}
+      viewport={{ once: true, margin: "-50px" }}
+    >
+      <motion.div
+        className="bg-gradient-to-br from-[#1E1E2A]/90 to-[#0a192f]/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-2xl border border-[#64ffda]/20 h-full transform"
+        whileHover={{ translateY: -8, rotateX: 5, rotateY: 5 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      >
+        {/* Header with glow effect */}
+        <div className="relative">
+          <div className="absolute -top-20 -left-20 w-40 h-40 bg-[#64ffda]/20 rounded-full filter blur-3xl opacity-60"></div>
+          <div className="p-6 relative z-10 border-b border-[#64ffda]/10">
+            <div className="flex items-center">
+              <div className="p-3 bg-[#64ffda]/10 rounded-lg mr-4">
+                {icon}
+              </div>
+              <div>
+                <div className="font-mono text-xs text-[#8b5cf6]"># category</div>
+                <h3 className="text-xl font-bold text-[#e6f1ff]">{title}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Skills list with enhanced visuals */}
+        <div className="p-6">
+          <div className="space-y-5">
+            {skills.map((skill, skillIndex) => (
+              <motion.div 
+                key={skillIndex}
+                className="group"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: isMobile ? 0.1 : 0.3 + skillIndex * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="flex justify-between items-center mb-2">
+                  <div className="flex items-center">
+                    <span className="text-[#e6f1ff] font-medium group-hover:text-[#64ffda] transition-colors duration-300">
+                      {skill.name}
+                    </span>
+                    <span className="ml-2 px-2 py-0.5 text-xs rounded-full bg-[rgba(100,255,218,0.1)] text-[#64ffda]">
+                      {skill.level}
+                    </span>
+                  </div>
+                  <span className="text-[#8b5cf6] font-mono text-sm">{skill.percentage}%</span>
+                </div>
+                
+                <div className="h-2.5 rounded-full bg-[#1E1E2A] overflow-hidden relative">
+                  <motion.div 
+                    className="h-full rounded-full absolute top-0 left-0"
+                    style={{ backgroundColor: skill.color, width: `${skill.percentage}%` }}
+                    initial={{ width: 0, opacity: 0.5 }}
+                    whileInView={{ width: `${skill.percentage}%`, opacity: 1 }}
+                    transition={{ duration: 1.2, delay: isMobile ? 0.1 : skillIndex * 0.1, ease: "easeOut" }}
+                    viewport={{ once: true }}
+                  />
+                  
+                  {/* Animated glow effect */}
+                  <motion.div
+                    className="absolute top-0 bottom-0 w-20 bg-white/20 skew-x-30 -translate-x-20"
+                    animate={{
+                      translateX: ["0%", "100%"],
+                    }}
+                    transition={{
+                      duration: 2,
+                      ease: "easeInOut",
+                      delay: 1 + skillIndex * 0.2,
+                      repeat: Infinity,
+                      repeatDelay: 5
+                    }}
+                    style={{ filter: "blur(8px)" }}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 // Main Home component
 export default function Home() {
   const [typedText, setTypedText] = useState("");
   const typingRef = useRef<HTMLSpanElement>(null);
+  const isMobile = useIsMobile();
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
+  
+  // Floating particles
+  const [particles, setParticles] = useState<Array<{x: number, y: number, size: number, color: string, speed: number}>>([]);
   
   // Set title and meta description on mount
   useEffect(() => {
     document.title = "Osama Hashmi - Full Stack Developer";
+    
+    // Generate floating particles
+    const newParticles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      size: Math.random() * 3 + 1,
+      color: Math.random() > 0.5 ? '#64ffda' : '#8b5cf6',
+      speed: Math.random() * 0.2 + 0.1
+    }));
+    
+    setParticles(newParticles);
   }, []);
 
   // Initialize scroll animations
@@ -254,7 +378,7 @@ export default function Home() {
       } else {
         clearInterval(typingInterval);
       }
-    }, 50);
+    }, 40); // Faster typing for better responsiveness
     
     return () => clearInterval(typingInterval);
   }, []);
@@ -263,10 +387,39 @@ export default function Home() {
     <main className="relative">
       {/* Hero Section - Developer Themed */}
       <section id="home" className="min-h-screen flex flex-col justify-center pt-16 relative overflow-hidden">
-        {/* Animated code background */}
-        <div className="absolute inset-0 overflow-hidden opacity-10 z-0">
-          <div className="code-rain">
-            {Array.from({ length: 15 }).map((_, i) => (
+        {/* Floating particles background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {particles.map((particle, index) => (
+            <motion.div
+              key={index}
+              className="absolute rounded-full"
+              style={{
+                width: particle.size,
+                height: particle.size,
+                backgroundColor: particle.color,
+                left: particle.x,
+                top: particle.y,
+                filter: 'blur(1px)',
+                opacity: 0.6,
+              }}
+              animate={{
+                y: [0, -20, 0],
+                opacity: [0.2, 0.6, 0.2]
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+                ease: "easeInOut"
+              }}
+            />
+          ))}
+        </div>
+        
+        {/* Animated code background - optimized rendering */}
+        <div className="absolute inset-0 overflow-hidden opacity-5 z-0">
+          <div className="code-rain will-change-transform">
+            {Array.from({ length: isMobile ? 8 : 15 }).map((_, i) => (
               <motion.div 
                 key={i}
                 className="code-line text-xs font-mono text-[#64ffda]"
@@ -292,11 +445,12 @@ export default function Home() {
                 style={{
                   position: 'absolute',
                   left: `${(i * 7) % 100}%`,
+                  willChange: 'transform, opacity'
                 }}
               >
-                {Array.from({ length: 10 }).map((_, j) => (
+                {Array.from({ length: isMobile ? 5 : 10 }).map((_, j) => (
                   <div key={j} className="my-1">
-                    {['const', 'function', 'let', 'import', 'export', 'return', 'await', 'async', 'class', '<div>', '</div>'][Math.floor(Math.random() * 10)]}
+                    {['const', 'function', 'let', 'import', 'export', 'return', 'await', 'async', 'class', '<div>'][Math.floor(Math.random() * 10)]}
                     {Math.random() > 0.5 ? '()' : ''}
                     {Math.random() > 0.7 ? ' {' : ''}
                     {Math.random() > 0.8 ? ' }' : ''}
@@ -308,11 +462,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Circuit board pattern */}
-        <div className="absolute inset-0 z-0 circuit-pattern opacity-5"></div>
+        {/* Circuit board pattern - optimized for performance */}
+        <div className="absolute inset-0 z-0 circuit-pattern opacity-5 will-change-transform"></div>
 
-        <div className="container mx-auto px-6 z-10 relative">
-          <div className="max-w-3xl">
+        <div className="container mx-auto px-4 sm:px-6 z-10 relative">
+          <div className="max-w-3xl mx-auto">
             <motion.div 
               className="inline-block font-mono mb-4 text-sm text-[#64ffda] bg-[#1E1E2A]/80 px-3 py-1 rounded-md border-l-2 border-[#64ffda]"
               initial={{ opacity: 0, y: 20 }}
@@ -323,7 +477,7 @@ export default function Home() {
             </motion.div>
             
             <motion.h1 
-              className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -332,32 +486,48 @@ export default function Home() {
               <span className="text-[#64ffda]">.</span>
               <span className="text-[#e6f1ff]">Hashmi</span>
               <span className="text-[#8b5cf6]">()</span>
+              <motion.span 
+                className="inline-block text-[#64ffda]"
+                animate={{ 
+                  opacity: [1, 0.5, 1],
+                  scale: [1, 1.05, 1]
+                }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity,
+                  repeatType: "reverse" 
+                }}
+              >
+                <Sparkles className="inline-block w-8 h-8 ml-2" />
+              </motion.span>
             </motion.h1>
             
             <motion.div 
-              className="mb-8 font-mono text-[#e6f1ff]/70 text-lg bg-[#1E1E2A]/70 p-4 rounded-md border-l-2 border-[#64ffda] backdrop-blur-sm shadow-[0_5px_30px_rgba(100,255,218,0.15)]"
+              className="mb-8 font-mono text-[#e6f1ff]/70 text-base sm:text-lg bg-[#1E1E2A]/70 p-4 rounded-md border-l-2 border-[#64ffda] backdrop-blur-sm shadow-[0_5px_30px_rgba(100,255,218,0.15)]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <div className="flex items-center">
-                <Terminal className="w-4 h-4 text-[#64ffda] mr-2" />
-                <span className="text-[#8b5cf6] mr-2">const</span>
-                <span className="text-[#64ffda]">role</span>
-                <span className="mr-2"> = </span>
-                <span className="text-[#e6f1ff]">"Full Stack Developer";</span>
+                <Terminal className="w-4 h-4 text-[#64ffda] mr-2 flex-shrink-0" />
+                <div className="flex flex-wrap items-center">
+                  <span className="text-[#8b5cf6] mr-2">const</span>
+                  <span className="text-[#64ffda]">role</span>
+                  <span className="mr-2"> = </span>
+                  <span className="text-[#e6f1ff]">"Full Stack Developer";</span>
+                </div>
               </div>
               <div className="flex items-start mt-2">
-                <Terminal className="w-4 h-4 text-[#64ffda] mr-2 mt-1" />
+                <Terminal className="w-4 h-4 text-[#64ffda] mr-2 mt-1 flex-shrink-0" />
                 <div>
-                  <div className="flex">
+                  <div className="flex flex-wrap">
                     <span className="text-[#8b5cf6] mr-2">const</span>
                     <span className="text-[#64ffda]">description</span>
                     <span className="mr-2"> = </span>
                     <span className="text-[#e6f1ff]">`</span>
                   </div>
-                  <div className="pl-8 border-l border-[#8b5cf6]/30 my-2">
-                    <span ref={typingRef} className="text-[#e6f1ff]/90">{typedText}</span>
+                  <div className="pl-4 sm:pl-8 border-l border-[#8b5cf6]/30 my-2">
+                    <span ref={typingRef} className="text-[#e6f1ff]/90 break-words">{typedText}</span>
                     <span className="animate-pulse text-[#64ffda]">|</span>
                   </div>
                   <div>
@@ -365,8 +535,8 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center mt-2">
-                <Terminal className="w-4 h-4 text-[#64ffda] mr-2" />
+              <div className="flex flex-wrap items-center mt-2">
+                <Terminal className="w-4 h-4 text-[#64ffda] mr-2 flex-shrink-0" />
                 <span className="text-[#8b5cf6] mr-2">const</span>
                 <span className="text-[#64ffda]">skills</span>
                 <span className="mr-2"> = </span>
@@ -401,8 +571,8 @@ export default function Home() {
               <motion.a 
                 href="#projects" 
                 className="group relative px-6 py-3 border-2 border-[#64ffda] text-[#64ffda] rounded-md overflow-hidden flex items-center gap-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
               >
                 <motion.div 
                   className="absolute inset-0 bg-gradient-to-r from-[#64ffda]/10 to-[#8b5cf6]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -425,8 +595,8 @@ export default function Home() {
               <motion.a 
                 href="#contact" 
                 className="group relative px-6 py-3 bg-gradient-to-r from-[#64ffda] to-[#64ffda] bg-size-200 bg-pos-0 hover:bg-pos-100 text-[#0a192f] rounded-md transition-all duration-500 flex items-center gap-2 font-medium shadow-lg shadow-[#64ffda]/20"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
               >
                 <MessageSquare size={18} />
                 <span>Contact Me</span>
@@ -443,7 +613,10 @@ export default function Home() {
           </div>
         </div>
         
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+        <motion.div 
+          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
+          style={{ opacity }}
+        >
           <motion.div 
             className="text-[#e6f1ff]/60 mb-2 text-sm font-mono"
             initial={{ opacity: 0 }}
@@ -463,17 +636,14 @@ export default function Home() {
               repeatType: "loop",
             }}
           >
-            <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="1" y="1" width="14" height="22" rx="7" stroke="#64ffda" strokeWidth="2"/>
-              <circle className="animate-pulse" cx="8" cy="8" r="3" fill="#64ffda"/>
-            </svg>
+            <ChevronDown className="w-6 h-6 text-[#64ffda]" />
           </motion.div>
-        </div>
+        </motion.div>
       </section>
       
       {/* About Section - Code-themed */}
       <section id="about" className="py-20 bg-gradient-to-b from-[#0a192f] to-[#121212]">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -539,21 +709,40 @@ export default function Home() {
                 <img 
                   src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=700&q=80" 
                   alt="Osama Hashmi - Full Stack Developer" 
-                  className="rounded-lg shadow-xl relative z-10 object-cover h-[500px]"
+                  className="rounded-lg shadow-xl relative z-10 object-cover h-[500px] w-full"
+                  loading="lazy"
                 />
                 <div className="absolute -bottom-4 -right-4 border-2 border-[#64ffda] rounded-lg w-full h-full"></div>
                 
                 {/* Tech tags overlay */}
                 <div className="absolute top-4 left-4 space-y-2">
-                  <div className="bg-[#0a192f]/80 backdrop-blur-sm text-[#64ffda] px-3 py-1 rounded-full text-sm inline-block">
+                  <motion.div 
+                    className="bg-[#0a192f]/80 backdrop-blur-sm text-[#64ffda] px-3 py-1 rounded-full text-sm inline-block"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                    viewport={{ once: true }}
+                  >
                     #javascript
-                  </div>
-                  <div className="bg-[#0a192f]/80 backdrop-blur-sm text-[#8b5cf6] px-3 py-1 rounded-full text-sm inline-block">
+                  </motion.div>
+                  <motion.div 
+                    className="bg-[#0a192f]/80 backdrop-blur-sm text-[#8b5cf6] px-3 py-1 rounded-full text-sm inline-block"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                    viewport={{ once: true }}
+                  >
                     #react
-                  </div>
-                  <div className="bg-[#0a192f]/80 backdrop-blur-sm text-[#64ffda] px-3 py-1 rounded-full text-sm inline-block">
+                  </motion.div>
+                  <motion.div 
+                    className="bg-[#0a192f]/80 backdrop-blur-sm text-[#64ffda] px-3 py-1 rounded-full text-sm inline-block"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.7 }}
+                    viewport={{ once: true }}
+                  >
                     #node.js
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </motion.div>
@@ -563,7 +752,7 @@ export default function Home() {
       
       {/* Experience Section */}
       <section id="experience" className="py-20 bg-[#0a192f]">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -582,7 +771,7 @@ export default function Home() {
           
           <div className="relative">
             {/* Vertical timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-[#64ffda]/50 to-[#8b5cf6]/50"></div>
+            <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-1 transform md:-translate-x-1/2 bg-gradient-to-b from-[#64ffda]/50 to-[#8b5cf6]/50"></div>
             
             {/* Experience Timeline Items */}
             {[
@@ -613,20 +802,23 @@ export default function Home() {
             ].map((exp, index) => (
               <motion.div 
                 key={index}
-                className={`relative z-10 flex mb-12 ${index % 2 === 0 ? 'justify-start md:justify-end' : 'justify-start'} items-center`}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                className={`relative z-10 flex mb-12 ${
+                  isMobile ? 'pl-8' : 
+                  index % 2 === 0 ? 'justify-start md:justify-end' : 'justify-start'
+                } items-center`}
+                initial={{ opacity: 0, x: isMobile ? -20 : (index % 2 === 0 ? -50 : 50) }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
                 viewport={{ once: true, margin: "-100px" }}
               >
                 {/* Timeline dot */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 rounded-full bg-[#64ffda] border-4 border-[#0a192f] shadow-glow"></div>
+                <div className={`absolute ${isMobile ? 'left-0' : 'left-1/2'} transform ${isMobile ? '' : '-translate-x-1/2'} w-5 h-5 rounded-full bg-[#64ffda] border-4 border-[#0a192f] shadow-glow`}></div>
                 
                 {/* Timeline content */}
                 <div 
                   className={`w-full md:w-5/12 p-6 bg-[#1E1E2A] rounded-lg border border-[#64ffda]/20
                    hover:shadow-[0_10px_40px_-15px_rgba(100,255,218,0.2)] transition-all duration-300
-                   ${index % 2 === 0 ? 'md:mr-12' : 'md:ml-12'}`}
+                   ${isMobile ? '' : (index % 2 === 0 ? 'md:mr-12' : 'md:ml-12')}`}
                 >
                   <div className="flex flex-col h-full">
                     <div className="font-mono text-xs text-[#8b5cf6] mb-1">// {exp.period}</div>
@@ -664,10 +856,10 @@ export default function Home() {
       
       {/* Skills Section - Code-themed with floating cards */}
       <section id="skills" className="py-20 bg-gradient-to-b from-[#121212] to-[#0a192f]/90 relative overflow-hidden">
-        {/* Background code pattern */}
+        {/* Background code pattern - reduced for mobile */}
         <div className="absolute inset-0 opacity-[0.07] z-0">
-          <div className="grid grid-cols-4 gap-2 h-full overflow-hidden">
-            {Array.from({ length: 20 }).map((_, i) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 h-full overflow-hidden">
+            {Array.from({ length: isMobile ? 10 : 20 }).map((_, i) => (
               <motion.div 
                 key={i}
                 className="font-mono text-xs text-[#64ffda] opacity-90 overflow-hidden"
@@ -683,13 +875,13 @@ export default function Home() {
                   }
                 }}
               >
-                {Array.from({ length: 30 }).map((_, j) => (
+                {Array.from({ length: isMobile ? 15 : 30 }).map((_, j) => (
                   <div key={j} className="my-1 overflow-hidden whitespace-nowrap">
                     {[
                       'function calculateSkill(years, projects) {',
                       '  return Math.min(years * 10 + projects * 2, 100);',
                       '}',
-                      'const expertise = ["React", "Node.js", "Three.js"];',
+                      'const expertise = ["React", "Node.js"];',
                       'expertise.map(tech => console.log(`Learning ${tech}`));',
                       'class Developer {',
                       '  constructor(name, skills) {',
@@ -697,12 +889,8 @@ export default function Home() {
                       '    this.skills = skills;',
                       '  }',
                       '  code() { return "Building amazing experiences"; }',
-                      '}',
-                      'import { useState, useEffect } from "react";',
-                      'export default function Skills() {',
-                      '  return <Component />;',
                       '}'
-                    ][j % 15]}
+                    ][j % 12]}
                   </div>
                 ))}
               </motion.div>
@@ -710,7 +898,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -719,7 +907,7 @@ export default function Home() {
             viewport={{ once: true, margin: "-100px" }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-2">
-              <span className="text-[#64ffda]">02.</span> <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e6f1ff] to-[#64ffda]">Technical Skills</span>
+              <span className="text-[#64ffda]">03.</span> <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e6f1ff] to-[#64ffda]">Technical Skills</span>
             </h2>
             <div className="h-1 w-32 bg-gradient-to-r from-[#64ffda] to-[#8b5cf6] mb-6 mx-auto rounded-full"></div>
             <p className="text-[#e6f1ff]/70 max-w-2xl mx-auto text-sm md:text-base">
@@ -728,145 +916,48 @@ export default function Home() {
           </motion.div>
           
           {/* Skill Categories with 3D-like floating cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-            {[
-              {
-                title: "Frontend Development",
-                icon: <Layers className="text-[#64ffda] w-10 h-10" />,
-                description: "Creating responsive, interactive user interfaces with modern frameworks and libraries.",
-                skills: [
-                  { name: "React.js", level: "Advanced", percentage: 95, color: "#61DAFB" },
-                  { name: "JavaScript (ES6+)", level: "Advanced", percentage: 92, color: "#F7DF1E" },
-                  { name: "TypeScript", level: "Advanced", percentage: 90, color: "#3178C6" },
-                  { name: "Three.js", level: "Intermediate", percentage: 85, color: "#8B5CF6" },
-                  { name: "HTML5 & CSS3", level: "Advanced", percentage: 95, color: "#E34F26" },
-                  { name: "Tailwind CSS", level: "Advanced", percentage: 90, color: "#06B6D4" }
-                ]
-              },
-              {
-                title: "Backend Development",
-                icon: <Database className="text-[#64ffda] w-10 h-10" />,
-                description: "Building robust, scalable server-side applications and APIs.",
-                skills: [
-                  { name: "Node.js", level: "Advanced", percentage: 90, color: "#339933" },
-                  { name: "Express.js", level: "Advanced", percentage: 85, color: "#000000" },
-                  { name: "GraphQL", level: "Intermediate", percentage: 80, color: "#E535AB" },
-                  { name: "MongoDB", level: "Intermediate", percentage: 80, color: "#47A248" },
-                  { name: "PostgreSQL", level: "Intermediate", percentage: 75, color: "#336791" },
-                  { name: "RESTful APIs", level: "Advanced", percentage: 90, color: "#FF9580" }
-                ]
-              },
-              {
-                title: "DevOps & Tools",
-                icon: <Cpu className="text-[#64ffda] w-10 h-10" />,
-                description: "Utilizing modern tools and practices for efficient development and deployment.",
-                skills: [
-                  { name: "Git & GitHub", level: "Advanced", percentage: 90, color: "#F05032" },
-                  { name: "Docker", level: "Intermediate", percentage: 70, color: "#2496ED" },
-                  { name: "CI/CD", level: "Intermediate", percentage: 75, color: "#4CAF50" },
-                  { name: "AWS", level: "Intermediate", percentage: 65, color: "#FF9900" },
-                  { name: "Webpack", level: "Intermediate", percentage: 80, color: "#8DD6F9" },
-                  { name: "Figma & UI/UX", level: "Advanced", percentage: 80, color: "#F24E1E" }
-                ]
-              }
-            ].map((category, categoryIndex) => (
-              <motion.div
-                key={categoryIndex}
-                className="perspective-1000"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: categoryIndex * 0.2 }}
-                viewport={{ once: true, margin: "-50px" }}
-              >
-                <motion.div
-                  className="bg-gradient-to-br from-[#1E1E2A]/90 to-[#0a192f]/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-2xl border border-[#64ffda]/20 h-full transform"
-                  whileHover={{ translateY: -10, rotateX: 5, rotateY: 5 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
-                  {/* Header with glow effect */}
-                  <div className="relative">
-                    <div className="absolute -top-20 -left-20 w-40 h-40 bg-[#64ffda]/20 rounded-full filter blur-3xl opacity-60"></div>
-                    <div className="p-6 relative z-10 border-b border-[#64ffda]/10">
-                      <div className="flex items-center">
-                        <div className="p-3 bg-[#64ffda]/10 rounded-lg mr-4">
-                          {category.icon}
-                        </div>
-                        <div>
-                          <div className="font-mono text-xs text-[#8b5cf6]"># category_{categoryIndex + 1}</div>
-                          <h3 className="text-xl font-bold text-[#e6f1ff]">{category.title}</h3>
-                        </div>
-                      </div>
-                      <p className="mt-4 text-[#e6f1ff]/60 text-sm">{category.description}</p>
-                    </div>
-                  </div>
-                  
-                  {/* Skills list with enhanced visuals */}
-                  <div className="p-6">
-                    <div className="space-y-6">
-                      {category.skills.map((skill, skillIndex) => (
-                        <motion.div 
-                          key={skillIndex}
-                          className="group"
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, delay: 0.3 + skillIndex * 0.1 }}
-                          viewport={{ once: true }}
-                        >
-                          <div className="flex justify-between items-center mb-2">
-                            <div className="flex items-center">
-                              <span className="text-[#e6f1ff] font-medium group-hover:text-[#64ffda] transition-colors duration-300">
-                                {skill.name}
-                              </span>
-                              <span className="ml-2 px-2 py-0.5 text-xs rounded-full bg-[rgba(100,255,218,0.1)] text-[#64ffda]">
-                                {skill.level}
-                              </span>
-                            </div>
-                            <span className="text-[#8b5cf6] font-mono text-sm">{skill.percentage}%</span>
-                          </div>
-                          
-                          <div className="h-2.5 rounded-full bg-[#1E1E2A] overflow-hidden relative">
-                            <motion.div 
-                              className="h-full rounded-full absolute top-0 left-0"
-                              style={{ backgroundColor: skill.color, width: `${skill.percentage}%` }}
-                              initial={{ width: 0, opacity: 0.5 }}
-                              whileInView={{ width: `${skill.percentage}%`, opacity: 1 }}
-                              transition={{ duration: 1.5, delay: skillIndex * 0.1, ease: "easeOut" }}
-                              viewport={{ once: true }}
-                            />
-                            
-                            {/* Animated glow effect */}
-                            <motion.div
-                              className="absolute top-0 bottom-0 w-20 bg-white/20 skew-x-30 -translate-x-20"
-                              animate={{
-                                translateX: ["0%", "100%"],
-                              }}
-                              transition={{
-                                duration: 2,
-                                ease: "easeInOut",
-                                delay: 1 + skillIndex * 0.2,
-                                repeat: Infinity,
-                                repeatDelay: 5
-                              }}
-                              style={{ filter: "blur(8px)" }}
-                            />
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  {/* Footer with code-like elements */}
-                  <div className="px-6 py-3 bg-[#1E1E2A]/50 border-t border-[#64ffda]/10">
-                    <code className="text-xs font-mono text-[#8b5cf6]">
-                      <span className="text-[#e6f1ff]/60">{"// "}</span>
-                      <span className="text-[#64ffda]">mastery</span>
-                      <span className="text-[#e6f1ff]/60">{" = "}</span>
-                      <span>{category.skills.reduce((sum, skill) => sum + skill.percentage, 0) / category.skills.length}%</span>
-                    </code>
-                  </div>
-                </motion.div>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            <SkillCard
+              title="Frontend Development"
+              icon={<Layers className="text-[#64ffda] w-10 h-10" />}
+              skills={[
+                { name: "React.js", level: "Advanced", percentage: 95, color: "#61DAFB" },
+                { name: "JavaScript (ES6+)", level: "Advanced", percentage: 92, color: "#F7DF1E" },
+                { name: "TypeScript", level: "Advanced", percentage: 90, color: "#3178C6" },
+                { name: "Three.js", level: "Intermediate", percentage: 85, color: "#8B5CF6" },
+                { name: "HTML5 & CSS3", level: "Advanced", percentage: 95, color: "#E34F26" },
+                { name: "Tailwind CSS", level: "Advanced", percentage: 90, color: "#06B6D4" }
+              ]}
+              delay={0.1}
+            />
+            
+            <SkillCard
+              title="Backend Development"
+              icon={<Database className="text-[#64ffda] w-10 h-10" />}
+              skills={[
+                { name: "Node.js", level: "Advanced", percentage: 90, color: "#339933" },
+                { name: "Express.js", level: "Advanced", percentage: 85, color: "#000000" },
+                { name: "GraphQL", level: "Intermediate", percentage: 80, color: "#E535AB" },
+                { name: "MongoDB", level: "Intermediate", percentage: 80, color: "#47A248" },
+                { name: "PostgreSQL", level: "Intermediate", percentage: 75, color: "#336791" },
+                { name: "RESTful APIs", level: "Advanced", percentage: 90, color: "#FF9580" }
+              ]}
+              delay={0.2}
+            />
+            
+            <SkillCard
+              title="DevOps & Tools"
+              icon={<Cpu className="text-[#64ffda] w-10 h-10" />}
+              skills={[
+                { name: "Git & GitHub", level: "Advanced", percentage: 90, color: "#F05032" },
+                { name: "Docker", level: "Intermediate", percentage: 70, color: "#2496ED" },
+                { name: "CI/CD", level: "Intermediate", percentage: 75, color: "#4CAF50" },
+                { name: "AWS", level: "Intermediate", percentage: 65, color: "#FF9900" },
+                { name: "Webpack", level: "Intermediate", percentage: 80, color: "#8DD6F9" },
+                { name: "Figma & UI/UX", level: "Advanced", percentage: 80, color: "#F24E1E" }
+              ]}
+              delay={0.3}
+            />
           </div>
           
           {/* Current Focus Area */}
@@ -919,7 +1010,7 @@ export default function Home() {
       
       {/* Projects Section */}
       <section id="projects" className="py-20 bg-gradient-to-b from-[#121212] to-[#0a192f]">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -928,7 +1019,7 @@ export default function Home() {
             viewport={{ once: true, margin: "-100px" }}
           >
             <h2 className="text-3xl font-bold mb-2">
-              <span className="text-[#64ffda]">03.</span> Projects
+              <span className="text-[#64ffda]">04.</span> Projects
             </h2>
             <div className="h-1 w-32 bg-[#8b5cf6]/50 mb-2 mx-auto"></div>
             <p className="text-center text-[#e6f1ff]/70 max-w-2xl mx-auto">
@@ -1001,16 +1092,16 @@ export default function Home() {
       
       {/* Contact Section */}
       <section id="contact" className="py-20 bg-[#121212] relative overflow-hidden">
-        {/* Background code pattern */}
+        {/* Background code pattern - reduced for mobile */}
         <div className="absolute inset-0 opacity-5 z-0 text-[8px] font-mono overflow-hidden text-[#64ffda] leading-tight">
-          {Array.from({ length: 50 }).map((_, i) => (
+          {Array.from({ length: isMobile ? 20 : 50 }).map((_, i) => (
             <div key={i}>
               {`{ "name": "contact", "email": "<email>", "subject": "<subject>", "message": "<message>", "timestamp": "${new Date().toISOString()}" }`}
             </div>
           ))}
         </div>
       
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -1019,7 +1110,7 @@ export default function Home() {
             viewport={{ once: true, margin: "-100px" }}
           >
             <h2 className="text-3xl font-bold mb-2">
-              <span className="text-[#64ffda]">04.</span> Contact
+              <span className="text-[#64ffda]">05.</span> Contact
             </h2>
             <div className="h-1 w-32 bg-[#8b5cf6]/50 mb-2 mx-auto"></div>
             <p className="text-center text-[#e6f1ff]/70 max-w-2xl mx-auto">
@@ -1268,7 +1359,7 @@ export default function Home() {
       
       {/* Footer */}
       <footer className="py-8 bg-[#0a192f] border-t border-[#1E1E2A]">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-[#e6f1ff]/60 mb-4 md:mb-0">
               &copy; {new Date().getFullYear()} Osama Hashmi. All rights reserved.
