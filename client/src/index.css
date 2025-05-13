@@ -1,3 +1,145 @@
+
+/* Animated code background elements */
+.circuit-pattern {
+  background-image: 
+    radial-gradient(#64ffda 2px, transparent 2px),
+    radial-gradient(#8b5cf6 1.5px, transparent 1.5px);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+  animation: circuit-move 120s linear infinite;
+}
+
+@keyframes circuit-move {
+  0% {
+    background-position: 0 0, 25px 25px;
+  }
+  100% {
+    background-position: 1000px 500px, 1025px 525px;
+  }
+}
+
+/* Gradient background utilities */
+.bg-size-200 {
+  background-size: 200% 100%;
+}
+
+.bg-pos-0 {
+  background-position: 0% 0%;
+}
+
+.bg-pos-100 {
+  background-position: 100% 0%;
+}
+
+/* Glow effects */
+.shadow-glow {
+  box-shadow: 0 0 15px rgba(100, 255, 218, 0.5);
+}
+
+/* Code syntax highlighting colors */
+.code-keyword {
+  color: #ff9580;
+}
+
+.code-function {
+  color: #8b5cf6;
+}
+
+.code-string {
+  color: #ffde80;
+}
+
+.code-property {
+  color: #64ffda;
+}
+
+.code-comment {
+  color: #7f8ea3;
+}
+
+/* For skill section animation */
+.skew-x-30 {
+  transform: skewX(30deg);
+}
+
+/* For perspective effect */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Zoom and blur effects */
+.zoom-in-scroll {
+  transition: transform 0.5s, filter 0.5s;
+}
+
+.zoom-in-scroll.once {
+  transform: scale(1);
+  filter: blur(0);
+}
+
+.zoom-in-scroll:not(.once) {
+  transform: scale(0.95);
+  filter: blur(2px);
+}
+
+.blur-in {
+  transition: opacity 0.5s, filter 0.5s;
+}
+
+.blur-in.once {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.blur-in:not(.once) {
+  opacity: 0;
+  filter: blur(4px);
+}
+
+/* Staggered children animations */
+.stagger-children > * {
+  transition: opacity 0.5s, transform 0.5s;
+  transition-delay: calc(var(--child-index, 0) * 0.1s);
+}
+
+.stagger-children.once > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-children:not(.once) > * {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Glow effect on hover */
+.glow-on-hover {
+  transition: box-shadow 0.3s;
+}
+
+.glow-on-hover:hover {
+  box-shadow: 0 0 25px rgba(100, 255, 218, 0.4);
+}
+
+/* Typing animation */
+.typing-animation {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #64ffda;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #64ffda }
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

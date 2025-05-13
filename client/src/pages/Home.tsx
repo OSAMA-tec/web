@@ -1,7 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import useScrollReveal from "@/lib/useScrollReveal";
 import { motion } from "framer-motion";
-import { Eye, Layers, Code, Database, Mail, Github, Linkedin, Twitter, X, MessageSquare } from "lucide-react";
+import { 
+  Eye, Layers, Code, Database, Mail, Github, Linkedin, Twitter, X, 
+  MessageSquare, ChevronsRight, Terminal, Cpu, GitBranch, Coffee, Zap
+} from "lucide-react";
 
 // Code animation component for developer-themed sections
 function CodeBlock({ 
@@ -260,10 +263,58 @@ export default function Home() {
     <main className="relative">
       {/* Hero Section - Developer Themed */}
       <section id="home" className="min-h-screen flex flex-col justify-center pt-16 relative overflow-hidden">
+        {/* Animated code background */}
+        <div className="absolute inset-0 overflow-hidden opacity-10 z-0">
+          <div className="code-rain">
+            {Array.from({ length: 15 }).map((_, i) => (
+              <motion.div 
+                key={i}
+                className="code-line text-xs font-mono text-[#64ffda]"
+                initial={{ y: -100, x: Math.random() * 100 - 50, opacity: 0 }}
+                animate={{ 
+                  y: ["0%", "100%"], 
+                  opacity: [0, 0.8, 0.2],
+                  transition: { 
+                    y: { 
+                      duration: 10 + Math.random() * 20, 
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      ease: "linear" 
+                    },
+                    opacity: {
+                      duration: 4,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut"
+                    }
+                  }
+                }}
+                style={{
+                  position: 'absolute',
+                  left: `${(i * 7) % 100}%`,
+                }}
+              >
+                {Array.from({ length: 10 }).map((_, j) => (
+                  <div key={j} className="my-1">
+                    {['const', 'function', 'let', 'import', 'export', 'return', 'await', 'async', 'class', '<div>', '</div>'][Math.floor(Math.random() * 10)]}
+                    {Math.random() > 0.5 ? '()' : ''}
+                    {Math.random() > 0.7 ? ' {' : ''}
+                    {Math.random() > 0.8 ? ' }' : ''}
+                    {Math.random() > 0.5 ? ';' : ''}
+                  </div>
+                ))}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Circuit board pattern */}
+        <div className="absolute inset-0 z-0 circuit-pattern opacity-5"></div>
+
         <div className="container mx-auto px-6 z-10 relative">
           <div className="max-w-3xl">
             <motion.div 
-              className="inline-block font-mono mb-4 text-sm text-[#64ffda]"
+              className="inline-block font-mono mb-4 text-sm text-[#64ffda] bg-[#1E1E2A]/80 px-3 py-1 rounded-md border-l-2 border-[#64ffda]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -284,25 +335,60 @@ export default function Home() {
             </motion.h1>
             
             <motion.div 
-              className="mb-8 font-mono text-[#e6f1ff]/70 text-lg bg-[#1E1E2A]/50 p-4 rounded-md border-l-2 border-[#64ffda]"
+              className="mb-8 font-mono text-[#e6f1ff]/70 text-lg bg-[#1E1E2A]/70 p-4 rounded-md border-l-2 border-[#64ffda] backdrop-blur-sm shadow-[0_5px_30px_rgba(100,255,218,0.15)]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <div className="flex">
+              <div className="flex items-center">
+                <Terminal className="w-4 h-4 text-[#64ffda] mr-2" />
                 <span className="text-[#8b5cf6] mr-2">const</span>
                 <span className="text-[#64ffda]">role</span>
                 <span className="mr-2"> = </span>
                 <span className="text-[#e6f1ff]">"Full Stack Developer";</span>
               </div>
-              <div className="flex mt-2">
+              <div className="flex items-start mt-2">
+                <Terminal className="w-4 h-4 text-[#64ffda] mr-2 mt-1" />
+                <div>
+                  <div className="flex">
+                    <span className="text-[#8b5cf6] mr-2">const</span>
+                    <span className="text-[#64ffda]">description</span>
+                    <span className="mr-2"> = </span>
+                    <span className="text-[#e6f1ff]">`</span>
+                  </div>
+                  <div className="pl-8 border-l border-[#8b5cf6]/30 my-2">
+                    <span ref={typingRef} className="text-[#e6f1ff]/90">{typedText}</span>
+                    <span className="animate-pulse text-[#64ffda]">|</span>
+                  </div>
+                  <div>
+                    <span className="text-[#e6f1ff]">`;</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center mt-2">
+                <Terminal className="w-4 h-4 text-[#64ffda] mr-2" />
                 <span className="text-[#8b5cf6] mr-2">const</span>
-                <span className="text-[#64ffda]">description</span>
+                <span className="text-[#64ffda]">skills</span>
                 <span className="mr-2"> = </span>
-                <span className="text-[#e6f1ff]">"</span>
-                <span ref={typingRef}>{typedText}</span>
-                <span className="animate-pulse">|</span>
-                <span className="text-[#e6f1ff]">";</span>
+                <span className="text-[#e6f1ff]">[</span>
+                <motion.span 
+                  className="text-[#ff9580]"
+                  animate={{ opacity: [1, 0.5, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >"React"</motion.span>
+                <span className="text-[#e6f1ff]">, </span>
+                <motion.span 
+                  className="text-[#ffde80]"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >"Node.js"</motion.span>
+                <span className="text-[#e6f1ff]">, </span>
+                <motion.span 
+                  className="text-[#80ffea]"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                >"Three.js"</motion.span>
+                <span className="text-[#e6f1ff]">];</span>
               </div>
             </motion.div>
             
@@ -312,20 +398,47 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <a 
+              <motion.a 
                 href="#projects" 
-                className="px-6 py-3 border-2 border-[#64ffda] text-[#64ffda] rounded-md hover:bg-[#64ffda]/10 transition-colors duration-300 flex items-center gap-2"
+                className="group relative px-6 py-3 border-2 border-[#64ffda] text-[#64ffda] rounded-md overflow-hidden flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
               >
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-r from-[#64ffda]/10 to-[#8b5cf6]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "0%" }}
+                  transition={{ duration: 0.4 }}
+                />
                 <Code size={18} />
                 <span>View Projects</span>
-              </a>
-              <a 
+                <motion.div
+                  className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  initial={{ x: -5 }}
+                  whileHover={{ x: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronsRight size={14} />
+                </motion.div>
+              </motion.a>
+              
+              <motion.a 
                 href="#contact" 
-                className="px-6 py-3 bg-[#64ffda] text-[#0a192f] rounded-md hover:bg-[#64ffda]/90 transition-colors duration-300 flex items-center gap-2 font-medium"
+                className="group relative px-6 py-3 bg-gradient-to-r from-[#64ffda] to-[#64ffda] bg-size-200 bg-pos-0 hover:bg-pos-100 text-[#0a192f] rounded-md transition-all duration-500 flex items-center gap-2 font-medium shadow-lg shadow-[#64ffda]/20"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <MessageSquare size={18} />
                 <span>Contact Me</span>
-              </a>
+                <motion.div
+                  className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  initial={{ x: -5 }}
+                  whileHover={{ x: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronsRight size={14} />
+                </motion.div>
+              </motion.a>
             </motion.div>
           </div>
         </div>
@@ -549,143 +662,258 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Skills Section - Code-themed */}
-      <section id="skills" className="py-20 bg-[#121212]">
-        <div className="container mx-auto px-6">
+      {/* Skills Section - Code-themed with floating cards */}
+      <section id="skills" className="py-20 bg-gradient-to-b from-[#121212] to-[#0a192f]/90 relative overflow-hidden">
+        {/* Background code pattern */}
+        <div className="absolute inset-0 opacity-[0.07] z-0">
+          <div className="grid grid-cols-4 gap-2 h-full overflow-hidden">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <motion.div 
+                key={i}
+                className="font-mono text-xs text-[#64ffda] opacity-90 overflow-hidden"
+                initial={{ opacity: 0.3 }}
+                animate={{ 
+                  opacity: [0.2, 0.5, 0.2],
+                  transition: { 
+                    duration: 5 + Math.random() * 5,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut",
+                    delay: i * 0.1
+                  }
+                }}
+              >
+                {Array.from({ length: 30 }).map((_, j) => (
+                  <div key={j} className="my-1 overflow-hidden whitespace-nowrap">
+                    {[
+                      'function calculateSkill(years, projects) {',
+                      '  return Math.min(years * 10 + projects * 2, 100);',
+                      '}',
+                      'const expertise = ["React", "Node.js", "Three.js"];',
+                      'expertise.map(tech => console.log(`Learning ${tech}`));',
+                      'class Developer {',
+                      '  constructor(name, skills) {',
+                      '    this.name = name;',
+                      '    this.skills = skills;',
+                      '  }',
+                      '  code() { return "Building amazing experiences"; }',
+                      '}',
+                      'import { useState, useEffect } from "react";',
+                      'export default function Skills() {',
+                      '  return <Component />;',
+                      '}'
+                    ][j % 15]}
+                  </div>
+                ))}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
-            className="text-center mb-12"
+            className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true, margin: "-100px" }}
           >
-            <h2 className="text-3xl font-bold mb-2">
-              <span className="text-[#64ffda]">02.</span> Skills
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">
+              <span className="text-[#64ffda]">02.</span> <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e6f1ff] to-[#64ffda]">Technical Skills</span>
             </h2>
-            <div className="h-1 w-32 bg-[#8b5cf6]/50 mb-2 mx-auto"></div>
+            <div className="h-1 w-32 bg-gradient-to-r from-[#64ffda] to-[#8b5cf6] mb-6 mx-auto rounded-full"></div>
+            <p className="text-[#e6f1ff]/70 max-w-2xl mx-auto text-sm md:text-base">
+              My technical toolkit includes a range of modern web technologies, allowing me to build complete applications from concept to deployment.
+            </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Frontend Skills */}
-            <motion.div 
-              className="bg-[#1E1E2A] rounded-lg p-6 shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <div className="flex items-center mb-6">
-                <Layers className="text-[#64ffda] w-8 h-8" />
-                <h3 className="text-xl font-semibold ml-4">Frontend</h3>
-              </div>
-              
-              <div className="space-y-5">
-                {[
-                  { name: "React.js", percentage: 95 },
-                  { name: "JavaScript (ES6+)", percentage: 90 },
-                  { name: "Three.js", percentage: 85 },
-                  { name: "HTML5 & CSS3", percentage: 95 },
-                  { name: "Tailwind CSS", percentage: 90 },
-                ].map((skill, index) => (
-                  <div key={index}>
-                    <div className="flex justify-between mb-2">
-                      <span>{skill.name}</span>
-                      <span>{skill.percentage}%</span>
-                    </div>
-                    <div className="h-2 rounded-sm bg-[rgba(100,255,218,0.2)] overflow-hidden">
-                      <motion.div 
-                        className="h-full rounded-sm bg-gradient-to-r from-[#64ffda] to-[#8b5cf6]"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.percentage}%` }}
-                        transition={{ duration: 1, delay: 0.1 * index }}
-                        viewport={{ once: true }}
-                      ></motion.div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-            
-            {/* Backend Skills */}
-            <motion.div 
-              className="bg-[#1E1E2A] rounded-lg p-6 shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <div className="flex items-center mb-6">
-                <Database className="text-[#64ffda] w-8 h-8" />
-                <h3 className="text-xl font-semibold ml-4">Backend</h3>
-              </div>
-              
-              <div className="space-y-5">
-                {[
-                  { name: "Node.js", percentage: 90 },
-                  { name: "Express.js", percentage: 85 },
-                  { name: "MongoDB", percentage: 80 },
-                  { name: "SQL (PostgreSQL)", percentage: 75 },
-                  { name: "RESTful APIs", percentage: 90 },
-                ].map((skill, index) => (
-                  <div key={index}>
-                    <div className="flex justify-between mb-2">
-                      <span>{skill.name}</span>
-                      <span>{skill.percentage}%</span>
-                    </div>
-                    <div className="h-2 rounded-sm bg-[rgba(100,255,218,0.2)] overflow-hidden">
-                      <motion.div 
-                        className="h-full rounded-sm bg-gradient-to-r from-[#64ffda] to-[#8b5cf6]"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.percentage}%` }}
-                        transition={{ duration: 1, delay: 0.1 * index }}
-                        viewport={{ once: true }}
-                      ></motion.div>
+          {/* Skill Categories with 3D-like floating cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+            {[
+              {
+                title: "Frontend Development",
+                icon: <Layers className="text-[#64ffda] w-10 h-10" />,
+                description: "Creating responsive, interactive user interfaces with modern frameworks and libraries.",
+                skills: [
+                  { name: "React.js", level: "Advanced", percentage: 95, color: "#61DAFB" },
+                  { name: "JavaScript (ES6+)", level: "Advanced", percentage: 92, color: "#F7DF1E" },
+                  { name: "TypeScript", level: "Advanced", percentage: 90, color: "#3178C6" },
+                  { name: "Three.js", level: "Intermediate", percentage: 85, color: "#8B5CF6" },
+                  { name: "HTML5 & CSS3", level: "Advanced", percentage: 95, color: "#E34F26" },
+                  { name: "Tailwind CSS", level: "Advanced", percentage: 90, color: "#06B6D4" }
+                ]
+              },
+              {
+                title: "Backend Development",
+                icon: <Database className="text-[#64ffda] w-10 h-10" />,
+                description: "Building robust, scalable server-side applications and APIs.",
+                skills: [
+                  { name: "Node.js", level: "Advanced", percentage: 90, color: "#339933" },
+                  { name: "Express.js", level: "Advanced", percentage: 85, color: "#000000" },
+                  { name: "GraphQL", level: "Intermediate", percentage: 80, color: "#E535AB" },
+                  { name: "MongoDB", level: "Intermediate", percentage: 80, color: "#47A248" },
+                  { name: "PostgreSQL", level: "Intermediate", percentage: 75, color: "#336791" },
+                  { name: "RESTful APIs", level: "Advanced", percentage: 90, color: "#FF9580" }
+                ]
+              },
+              {
+                title: "DevOps & Tools",
+                icon: <Cpu className="text-[#64ffda] w-10 h-10" />,
+                description: "Utilizing modern tools and practices for efficient development and deployment.",
+                skills: [
+                  { name: "Git & GitHub", level: "Advanced", percentage: 90, color: "#F05032" },
+                  { name: "Docker", level: "Intermediate", percentage: 70, color: "#2496ED" },
+                  { name: "CI/CD", level: "Intermediate", percentage: 75, color: "#4CAF50" },
+                  { name: "AWS", level: "Intermediate", percentage: 65, color: "#FF9900" },
+                  { name: "Webpack", level: "Intermediate", percentage: 80, color: "#8DD6F9" },
+                  { name: "Figma & UI/UX", level: "Advanced", percentage: 80, color: "#F24E1E" }
+                ]
+              }
+            ].map((category, categoryIndex) => (
+              <motion.div
+                key={categoryIndex}
+                className="perspective-1000"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: categoryIndex * 0.2 }}
+                viewport={{ once: true, margin: "-50px" }}
+              >
+                <motion.div
+                  className="bg-gradient-to-br from-[#1E1E2A]/90 to-[#0a192f]/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-2xl border border-[#64ffda]/20 h-full transform"
+                  whileHover={{ translateY: -10, rotateX: 5, rotateY: 5 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  {/* Header with glow effect */}
+                  <div className="relative">
+                    <div className="absolute -top-20 -left-20 w-40 h-40 bg-[#64ffda]/20 rounded-full filter blur-3xl opacity-60"></div>
+                    <div className="p-6 relative z-10 border-b border-[#64ffda]/10">
+                      <div className="flex items-center">
+                        <div className="p-3 bg-[#64ffda]/10 rounded-lg mr-4">
+                          {category.icon}
+                        </div>
+                        <div>
+                          <div className="font-mono text-xs text-[#8b5cf6]"># category_{categoryIndex + 1}</div>
+                          <h3 className="text-xl font-bold text-[#e6f1ff]">{category.title}</h3>
+                        </div>
+                      </div>
+                      <p className="mt-4 text-[#e6f1ff]/60 text-sm">{category.description}</p>
                     </div>
                   </div>
-                ))}
-              </div>
-            </motion.div>
-            
-            {/* Other Skills */}
-            <motion.div 
-              className="bg-[#1E1E2A] rounded-lg p-6 shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <div className="flex items-center mb-6">
-                <Code className="text-[#64ffda] w-8 h-8" />
-                <h3 className="text-xl font-semibold ml-4">Tools & Others</h3>
-              </div>
-              
-              <div className="space-y-5">
-                {[
-                  { name: "Git & GitHub", percentage: 90 },
-                  { name: "Docker", percentage: 70 },
-                  { name: "CI/CD", percentage: 75 },
-                  { name: "Responsive Design", percentage: 95 },
-                  { name: "Figma & UI/UX", percentage: 80 },
-                ].map((skill, index) => (
-                  <div key={index}>
-                    <div className="flex justify-between mb-2">
-                      <span>{skill.name}</span>
-                      <span>{skill.percentage}%</span>
-                    </div>
-                    <div className="h-2 rounded-sm bg-[rgba(100,255,218,0.2)] overflow-hidden">
-                      <motion.div 
-                        className="h-full rounded-sm bg-gradient-to-r from-[#64ffda] to-[#8b5cf6]"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.percentage}%` }}
-                        transition={{ duration: 1, delay: 0.1 * index }}
-                        viewport={{ once: true }}
-                      ></motion.div>
+                  
+                  {/* Skills list with enhanced visuals */}
+                  <div className="p-6">
+                    <div className="space-y-6">
+                      {category.skills.map((skill, skillIndex) => (
+                        <motion.div 
+                          key={skillIndex}
+                          className="group"
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, delay: 0.3 + skillIndex * 0.1 }}
+                          viewport={{ once: true }}
+                        >
+                          <div className="flex justify-between items-center mb-2">
+                            <div className="flex items-center">
+                              <span className="text-[#e6f1ff] font-medium group-hover:text-[#64ffda] transition-colors duration-300">
+                                {skill.name}
+                              </span>
+                              <span className="ml-2 px-2 py-0.5 text-xs rounded-full bg-[rgba(100,255,218,0.1)] text-[#64ffda]">
+                                {skill.level}
+                              </span>
+                            </div>
+                            <span className="text-[#8b5cf6] font-mono text-sm">{skill.percentage}%</span>
+                          </div>
+                          
+                          <div className="h-2.5 rounded-full bg-[#1E1E2A] overflow-hidden relative">
+                            <motion.div 
+                              className="h-full rounded-full absolute top-0 left-0"
+                              style={{ backgroundColor: skill.color, width: `${skill.percentage}%` }}
+                              initial={{ width: 0, opacity: 0.5 }}
+                              whileInView={{ width: `${skill.percentage}%`, opacity: 1 }}
+                              transition={{ duration: 1.5, delay: skillIndex * 0.1, ease: "easeOut" }}
+                              viewport={{ once: true }}
+                            />
+                            
+                            {/* Animated glow effect */}
+                            <motion.div
+                              className="absolute top-0 bottom-0 w-20 bg-white/20 skew-x-30 -translate-x-20"
+                              animate={{
+                                translateX: ["0%", "100%"],
+                              }}
+                              transition={{
+                                duration: 2,
+                                ease: "easeInOut",
+                                delay: 1 + skillIndex * 0.2,
+                                repeat: Infinity,
+                                repeatDelay: 5
+                              }}
+                              style={{ filter: "blur(8px)" }}
+                            />
+                          </div>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
-                ))}
-              </div>
-            </motion.div>
+                  
+                  {/* Footer with code-like elements */}
+                  <div className="px-6 py-3 bg-[#1E1E2A]/50 border-t border-[#64ffda]/10">
+                    <code className="text-xs font-mono text-[#8b5cf6]">
+                      <span className="text-[#e6f1ff]/60">{"// "}</span>
+                      <span className="text-[#64ffda]">mastery</span>
+                      <span className="text-[#e6f1ff]/60">{" = "}</span>
+                      <span>{category.skills.reduce((sum, skill) => sum + skill.percentage, 0) / category.skills.length}%</span>
+                    </code>
+                  </div>
+                </motion.div>
+              </motion.div>
+            ))}
           </div>
+          
+          {/* Current Focus Area */}
+          <motion.div
+            className="relative max-w-4xl mx-auto bg-[#1E1E2A]/70 border border-[#64ffda]/20 p-6 rounded-xl backdrop-blur-sm"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true, margin: "-50px" }}
+          >
+            <div className="absolute top-0 right-0 mt-4 mr-4">
+              <div className="flex space-x-1">
+                {[0, 1, 2].map((i) => (
+                  <motion.div
+                    key={i}
+                    className="w-2 h-2 rounded-full bg-[#64ffda]"
+                    animate={{ opacity: [0.2, 1, 0.2] }}
+                    transition={{ duration: 1.5, delay: i * 0.3, repeat: Infinity }}
+                  />
+                ))}
+              </div>
+            </div>
+            
+            <h3 className="font-semibold text-lg mb-3 text-[#64ffda] flex items-center">
+              <Zap className="w-5 h-5 mr-2" /> Current Focus Areas
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { name: "Three.js & WebGL", icon: <Code className="w-4 h-4" />, color: "#8B5CF6" },
+                { name: "AI Integration", icon: <Cpu className="w-4 h-4" />, color: "#64FFDA" },
+                { name: "Next.js & SSR", icon: <GitBranch className="w-4 h-4" />, color: "#FF9580" },
+              ].map((focus, idx) => (
+                <motion.div
+                  key={idx}
+                  className="flex items-center p-3 rounded-md bg-[#0a192f]/50 border border-[#64ffda]/10"
+                  whileHover={{ scale: 1.03, backgroundColor: "rgba(100,255,218,0.1)" }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className={`p-2 rounded-full mr-3`} style={{ backgroundColor: `${focus.color}20` }}>
+                    <div className="text-[#e6f1ff]">{focus.icon}</div>
+                  </div>
+                  <span className="text-[#e6f1ff]">{focus.name}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
       
