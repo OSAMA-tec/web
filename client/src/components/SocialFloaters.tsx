@@ -13,7 +13,7 @@ export default function SocialFloaters() {
       >
         <div className="flex flex-col space-y-5">
           <motion.a 
-            href="https://github.com" 
+            href="https://github.com/OSAMA-tec" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-[#e6f1ff]/60 hover:text-[#64ffda] transition-colors hover:-translate-y-2 duration-300"
@@ -24,7 +24,7 @@ export default function SocialFloaters() {
           </motion.a>
           
           <motion.a 
-            href="https://linkedin.com" 
+            href="https://www.linkedin.com/in/osamahash" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-[#e6f1ff]/60 hover:text-[#64ffda] transition-colors hover:-translate-y-2 duration-300"
@@ -46,7 +46,7 @@ export default function SocialFloaters() {
           </motion.a>
           
           <motion.a 
-            href="mailto:contact@osamahashmi.dev" 
+            href="mailto:hashmiosama555@gmail.com" 
             className="text-[#e6f1ff]/60 hover:text-[#64ffda] transition-colors hover:-translate-y-2 duration-300"
             whileHover={{ y: -5, color: '#64ffda' }}
             aria-label="Email"
@@ -70,7 +70,7 @@ export default function SocialFloaters() {
           className="text-[#e6f1ff]/60 hover:text-[#64ffda] transition-colors vertical-text tracking-widest text-xs font-mono"
           style={{ writingMode: 'vertical-rl' }}
         >
-          contact@osamahashmi.dev
+          hashmiosama555@gmail.com
         </a>
         
         <div className="h-24 w-0.5 bg-[#e6f1ff]/30 mt-5"></div>

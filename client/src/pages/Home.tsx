@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import useScrollReveal from "@/lib/useScrollReveal";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -370,7 +369,7 @@ export default function Home() {
     if (!typingRef.current) return;
     
     // Simulate terminal typing for intro text
-    const textToType = "I'm a Full Stack Developer focused on creating exceptional digital experiences with modern technologies.";
+    const textToType = "I'm a Full Stack Developer specializing in MERN stack development with a focus on creating scalable and performant web applications.";
     let currentIndex = 0;
     
     const typingInterval = setInterval(() => {
@@ -659,95 +658,44 @@ export default function Home() {
             <div className="h-1 w-32 bg-[#8b5cf6]/50 mb-2 mx-auto"></div>
           </motion.div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <div>
-              <CodeBlock fileName="about.js" delay={0.2}>
-                <div>
-                  <span className="code-keyword">const</span> <span className="code-function">aboutMe</span> <span>=</span> {`{`}
-                  <div className="ml-4">
-                    <span className="code-property">name</span>: <span className="code-string">'Osama Hashmi'</span>,
-                    <div><span className="code-property">title</span>: <span className="code-string">'Full Stack Developer'</span>,</div>
-                    <div><span className="code-property">focus</span>: <span className="code-string">'Building exceptional digital experiences'</span>,</div>
-                    <div><span className="code-property">experience</span>: <span className="code-string">'5+ years'</span>,</div>
-                    <div><span className="code-property">location</span>: <span className="code-string">'San Francisco, CA'</span>,</div>
-                    <div><span className="code-property">interests</span>: [<span className="code-string">'Web Development'</span>, <span className="code-string">'UI/UX'</span>, <span className="code-string">'Open Source'</span>, <span className="code-string">'3D Graphics'</span>],</div>
-                    <div>
-                      <span className="code-property">bio</span>: <span className="code-function">function</span>() {`{`}
-                      <div className="ml-4">
-                        <span className="code-keyword">return</span> <span className="code-string">'Hello! I\'m Osama, a passionate Full Stack Developer with a love for creating interactive and efficient web applications. My journey in web development started back in 2015, and since then I\'ve worked with a range of technologies to deliver solutions that solve real-world problems.'</span>;
-                      </div>
-                      {`}`}
-                    </div>
-                  </div>
-                  {`};`}
-                </div>
-              </CodeBlock>
-              
-              <CodeBlock fileName="philosophy.js" delay={0.4}>
-                <div>
-                  <span className="code-comment">// My Development Philosophy</span>
+          <div className="max-w-4xl mx-auto">
+            <CodeBlock fileName="about.js" delay={0.2}>
+              <div>
+                <span className="code-keyword">const</span> <span className="code-function">aboutMe</span> <span>=</span> {`{`}
+                <div className="ml-4">
+                  <span className="code-property">name</span>: <span className="code-string">'Osama Hashmi'</span>,
+                  <div><span className="code-property">title</span>: <span className="code-string">'Full Stack Developer'</span>,</div>
+                  <div><span className="code-property">focus</span>: <span className="code-string">'Building exceptional digital experiences'</span>,</div>
+                  <div><span className="code-property">experience</span>: <span className="code-string">'5+ years'</span>,</div>
+                  <div><span className="code-property">location</span>: <span className="code-string">'San Francisco, CA'</span>,</div>
+                  <div><span className="code-property">interests</span>: [<span className="code-string">'Web Development'</span>, <span className="code-string">'UI/UX'</span>, <span className="code-string">'Open Source'</span>, <span className="code-string">'3D Graphics'</span>],</div>
                   <div>
-                    <span className="code-keyword">const</span> <span className="code-function">philosophy</span> <span>=</span> [
+                    <span className="code-property">bio</span>: <span className="code-function">function</span>() {`{`}
                     <div className="ml-4">
-                      <div><span className="code-string">'Clean, maintainable code over quick fixes'</span>,</div>
-                      <div><span className="code-string">'Performance and accessibility as core priorities'</span>,</div>
-                      <div><span className="code-string">'User-centered design and development'</span>,</div>
-                      <div><span className="code-string">'Continuous learning and adaptation'</span></div>
+                      <span className="code-keyword">return</span> <span className="code-string">'Hello! I\'m Osama, a passionate Full Stack Developer with a love for creating interactive and efficient web applications. My journey in web development started back in 2015, and since then I\'ve worked with a range of technologies to deliver solutions that solve real-world problems.'</span>;
                     </div>
-                    ];
+                    {`}`}
                   </div>
                 </div>
-              </CodeBlock>
-            </div>
+                {`};`}
+              </div>
+            </CodeBlock>
             
-            <motion.div 
-              className="flex items-center justify-center"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <div className="relative max-w-md">
-                <img 
-                  src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=700&q=80" 
-                  alt="Osama Hashmi - Full Stack Developer" 
-                  className="rounded-lg shadow-xl relative z-10 object-cover h-[500px] w-full"
-                  loading="lazy"
-                />
-                <div className="absolute -bottom-4 -right-4 border-2 border-[#64ffda] rounded-lg w-full h-full"></div>
-                
-                {/* Tech tags overlay */}
-                <div className="absolute top-4 left-4 space-y-2">
-                  <motion.div 
-                    className="bg-[#0a192f]/80 backdrop-blur-sm text-[#64ffda] px-3 py-1 rounded-full text-sm inline-block"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                    viewport={{ once: true }}
-                  >
-                    #javascript
-                  </motion.div>
-                  <motion.div 
-                    className="bg-[#0a192f]/80 backdrop-blur-sm text-[#8b5cf6] px-3 py-1 rounded-full text-sm inline-block"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                    viewport={{ once: true }}
-                  >
-                    #react
-                  </motion.div>
-                  <motion.div 
-                    className="bg-[#0a192f]/80 backdrop-blur-sm text-[#64ffda] px-3 py-1 rounded-full text-sm inline-block"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.7 }}
-                    viewport={{ once: true }}
-                  >
-                    #node.js
-                  </motion.div>
+            <CodeBlock fileName="philosophy.js" delay={0.4}>
+              <div>
+                <span className="code-comment">// My Development Philosophy</span>
+                <div>
+                  <span className="code-keyword">const</span> <span className="code-function">philosophy</span> <span>=</span> [
+                  <div className="ml-4">
+                    <div><span className="code-string">'Clean, maintainable code over quick fixes'</span>,</div>
+                    <div><span className="code-string">'Performance and accessibility as core priorities'</span>,</div>
+                    <div><span className="code-string">'User-centered design and development'</span>,</div>
+                    <div><span className="code-string">'Continuous learning and adaptation'</span></div>
+                  </div>
+                  ];
                 </div>
               </div>
-            </motion.div>
+            </CodeBlock>
           </div>
         </div>
       </section>
@@ -778,28 +726,28 @@ export default function Home() {
             {/* Experience Timeline Items */}
             {[
               {
-                company: "TechVision Inc.",
-                title: "Senior Full Stack Developer",
-                period: "2021 - Present",
-                description: "Leading the development of enterprise web applications using React, Node.js, and PostgreSQL. Implementing CI/CD pipelines and mentoring junior developers.",
-                technologies: ["React", "Node.js", "TypeScript", "PostgreSQL", "Docker"],
-                highlight: "Reduced API response time by 40% through optimization"
+                company: "BufferSol Technologies",
+                title: "Backend Engineer",
+                period: "August 2023 - Present",
+                description: "Engineered a scalable microservices architecture using Node.js and Kubernetes, enhancing system efficiency and reducing deployment times across services.",
+                technologies: ["Node.js", "Kubernetes", "Microservices", "Docker", "Express"],
+                highlight: "Enhanced system efficiency by 60% and reduced deployment times by 50% across all services"
               },
               {
-                company: "InnovateSoft",
-                title: "Full Stack Developer",
-                period: "2019 - 2021",
-                description: "Developed and maintained multiple client websites and web applications. Collaborated with design team to implement responsive and accessible interfaces.",
-                technologies: ["JavaScript", "React", "Express", "MongoDB", "AWS"],
-                highlight: "Built a real-time analytics dashboard that increased client retention by 25%"
+                company: "Web Stacking",
+                title: "Backend Engineer",
+                period: "October 2024 - January 2025",
+                description: "Engineered microservices architecture with Twilio Voice/SMS and WebRTC integration for seamless real-time communication services.",
+                technologies: ["Microservices", "Twilio", "WebRTC", "Docker", "Kubernetes"],
+                highlight: "Improved system scalability by 150% through Docker and Kubernetes orchestration"
               },
               {
-                company: "WebCraft Solutions",
+                company: "KawanBantu",
                 title: "Frontend Developer",
-                period: "2017 - 2019",
-                description: "Created responsive UIs for web applications and integrated with backend APIs. Worked directly with clients to gather requirements and implement solutions.",
-                technologies: ["JavaScript", "HTML/CSS", "React", "Redux", "SASS"],
-                highlight: "Implemented UI redesign that improved user engagement by 30%"
+                period: "September 2022 - December 2022",
+                description: "Engineered interactive user interfaces for web applications, leveraging React and Redux to enhance user experience satisfaction metrics.",
+                technologies: ["React", "Redux", "JavaScript", "HTML/CSS", "REST APIs"],
+                highlight: "Improved client-side rendering speed by 50% through optimized component architecture"
               }
             ].map((exp, index) => (
               <motion.div 
@@ -925,8 +873,8 @@ export default function Home() {
               skills={[
                 { name: "React.js", level: "Advanced", percentage: 95, color: "#61DAFB" },
                 { name: "JavaScript (ES6+)", level: "Advanced", percentage: 92, color: "#F7DF1E" },
-                { name: "TypeScript", level: "Advanced", percentage: 90, color: "#3178C6" },
-                { name: "Three.js", level: "Intermediate", percentage: 85, color: "#8B5CF6" },
+                { name: "Redux", level: "Advanced", percentage: 90, color: "#764ABC" },
+                { name: "Next.js", level: "Advanced", percentage: 88, color: "#000000" },
                 { name: "HTML5 & CSS3", level: "Advanced", percentage: 95, color: "#E34F26" },
                 { name: "Tailwind CSS", level: "Advanced", percentage: 90, color: "#06B6D4" }
               ]}
@@ -938,11 +886,11 @@ export default function Home() {
               icon={<Database className="text-[#64ffda] w-10 h-10" />}
               skills={[
                 { name: "Node.js", level: "Advanced", percentage: 90, color: "#339933" },
-                { name: "Express.js", level: "Advanced", percentage: 85, color: "#000000" },
-                { name: "GraphQL", level: "Intermediate", percentage: 80, color: "#E535AB" },
-                { name: "MongoDB", level: "Intermediate", percentage: 80, color: "#47A248" },
-                { name: "PostgreSQL", level: "Intermediate", percentage: 75, color: "#336791" },
-                { name: "RESTful APIs", level: "Advanced", percentage: 90, color: "#FF9580" }
+                { name: "Express.js", level: "Advanced", percentage: 88, color: "#000000" },
+                { name: "MongoDB", level: "Advanced", percentage: 85, color: "#47A248" },
+                { name: "RESTful APIs", level: "Advanced", percentage: 92, color: "#FF9580" },
+                { name: "Firebase", level: "Intermediate", percentage: 80, color: "#FFCA28" },
+                { name: "Socket.io", level: "Intermediate", percentage: 78, color: "#010101" }
               ]}
               delay={0.2}
             />
@@ -952,11 +900,11 @@ export default function Home() {
               icon={<Cpu className="text-[#64ffda] w-10 h-10" />}
               skills={[
                 { name: "Git & GitHub", level: "Advanced", percentage: 90, color: "#F05032" },
-                { name: "Docker", level: "Intermediate", percentage: 70, color: "#2496ED" },
+                { name: "Docker", level: "Intermediate", percentage: 75, color: "#2496ED" },
+                { name: "AWS", level: "Intermediate", percentage: 70, color: "#FF9900" },
                 { name: "CI/CD", level: "Intermediate", percentage: 75, color: "#4CAF50" },
-                { name: "AWS", level: "Intermediate", percentage: 65, color: "#FF9900" },
-                { name: "Webpack", level: "Intermediate", percentage: 80, color: "#8DD6F9" },
-                { name: "Figma & UI/UX", level: "Advanced", percentage: 80, color: "#F24E1E" }
+                { name: "Postman", level: "Advanced", percentage: 85, color: "#FF6C37" },
+                { name: "Figma & UI/UX", level: "Intermediate", percentage: 80, color: "#F24E1E" }
               ]}
               delay={0.3}
             />
@@ -1031,61 +979,61 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <ProjectCard 
-              title="3D Interactive Dashboard"
-              description="A data visualization dashboard with interactive 3D elements built using Three.js and React. Features real-time data updates and custom animations."
-              tags={["React", "Three.js", "WebGL", "D3.js"]}
+              title="BlockVest"
+              description="NFT marketplace enabling users to buy, sell, and trade digital assets as NFTs. Incorporated machine learning algorithms to predict future NFT value trends for informed decision-making."
+              tags={["Blockchain", "Machine Learning", "React", "Node.js", "Solidity"]}
               image="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80"
-              link="https://example.com/dashboard"
-              githubLink="https://github.com/example/dashboard"
+              link="https://example.com/blockvest"
+              githubLink="https://github.com/OSAMA-tec/blockvest"
               delay={0.1}
             />
             
             <ProjectCard 
-              title="E-Commerce Platform"
-              description="A full-stack e-commerce solution with product management, cart functionality, user authentication, and payment integration using Stripe."
-              tags={["React", "Node.js", "MongoDB", "Stripe API"]}
+              title="Emiteer Clone"
+              description="Web application incorporating Twilio for voice calling, enabling seamless real-time communication between web users and web-to-phone lines, with live SMS functionality for improved messaging efficiency."
+              tags={["React", "Node.js", "Twilio", "WebRTC", "Express"]}
               image="https://images.unsplash.com/photo-1607082349566-187342175e2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80"
-              link="https://example.com/ecommerce"
-              githubLink="https://github.com/example/ecommerce"
+              link="https://example.com/emiteer-clone"
+              githubLink="https://github.com/OSAMA-tec/emiteer-clone"
               delay={0.2}
             />
             
             <ProjectCard 
-              title="3D Product Configurator"
-              description="An interactive tool allowing users to customize products in 3D space, change colors, materials, and view from different angles."
-              tags={["Three.js", "React", "WebGL", "GLSL"]}
+              title="IDO-CRM"
+              description="Comprehensive CRM solution with systems for accounting, sales pipelines, security staffing, and ATIS complaint management. Focus on backend systems ensuring seamless integration across diverse applications."
+              tags={["Node.js", "Express", "MongoDB", "React", "Redux"]}
               image="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80"
-              link="https://example.com/configurator"
-              githubLink="https://github.com/example/configurator"
+              link="https://example.com/ido-crm"
+              githubLink="https://github.com/OSAMA-tec/ido-crm"
               delay={0.3}
             />
             
             <ProjectCard 
-              title="Social Media Platform"
-              description="A full-stack social platform with real-time chat, post creation, user profiles, and notification system using Socket.io."
-              tags={["React", "Node.js", "Socket.io", "MongoDB"]}
+              title="E-Commerce Platform"
+              description="Full-stack e-commerce solution with product catalog, shopping cart, user authentication, and payment integration. Features admin dashboard for inventory management."
+              tags={["React", "Redux", "MongoDB", "Express", "Stripe"]}
               image="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80"
-              link="https://example.com/social"
-              githubLink="https://github.com/example/social"
+              link="https://example.com/ecommerce"
+              githubLink="https://github.com/OSAMA-tec/ecommerce"
               delay={0.4}
             />
             
             <ProjectCard 
-              title="REST API Service"
-              description="A scalable RESTful API service with authentication, rate limiting, and comprehensive documentation using Swagger."
-              tags={["Node.js", "Express", "JWT", "Swagger"]}
+              title="Real Estate Platform"
+              description="Developed a property listing platform with search functionality, virtual tours, appointment scheduling, and agent profile management."
+              tags={["React", "Node.js", "MongoDB", "Express"]}
               image="https://images.unsplash.com/photo-1593720213428-28a5b9e94613?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80"
-              githubLink="https://github.com/example/api"
+              githubLink="https://github.com/OSAMA-tec/real-estate"
               delay={0.5}
             />
             
             <ProjectCard 
-              title="3D Portfolio Website"
-              description="An immersive portfolio website with interactive 3D elements, custom shaders, and animations built with Three.js and React."
-              tags={["Three.js", "React", "GLSL", "Framer Motion"]}
+              title="Task Management System"
+              description="Collaborative task management application with project organization, deadline tracking, file sharing, and team communication features."
+              tags={["React", "Redux", "Node.js", "MongoDB"]}
               image="https://images.pixabay.com/photo/2017/08/10/08/47/code-2620118_1280.jpg"
-              link="https://example.com/portfolio"
-              githubLink="https://github.com/example/portfolio"
+              link="https://example.com/task-manager"
+              githubLink="https://github.com/OSAMA-tec/task-manager"
               delay={0.6}
             />
           </div>
@@ -1215,7 +1163,7 @@ export default function Home() {
                           placeholder="Subject"
                         />
                         <span className="absolute left-2 top-1/2 transform -translate-y-1/2 text-[#8b5cf6] font-mono">"</span>
-                        <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#8b5cf6] font-mono">";</span>
+                        <span className="absolute right-2 bottom-3 text-[#8b5cf6] font-mono">`;</span>
                       </div>
                     </div>
                     
@@ -1265,13 +1213,13 @@ export default function Home() {
                       <div className="bg-[#1E1E2A]/50 p-4 rounded-md">
                         <pre className="text-xs overflow-x-auto">
 {`{
-  "email": "contact@osamahashmi.dev",
+  "email": "hashmiosama555@gmail.com",
   "location": "San Francisco, CA",
   "availability": "Open to opportunities",
   "response_time": "Within 24 hours",
   "social": {
-    "github": "github.com/osamahashmi",
-    "linkedin": "linkedin.com/in/osamahashmi",
+    "github": "github.com/OSAMA-tec",
+    "linkedin": "linkedin.com/in/osamahash",
     "twitter": "twitter.com/osamahashmi"
   }
 }`}
@@ -1287,7 +1235,7 @@ export default function Home() {
                       
                       <div className="grid grid-cols-2 gap-3">
                         <motion.a 
-                          href="https://github.com" 
+                          href="https://github.com/OSAMA-tec" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="flex items-center px-3 py-2 bg-[#1E1E2A]/50 rounded-md hover:bg-[#1E1E2A] transition-colors text-[#e6f1ff]/80 hover:text-[#64ffda]"
@@ -1298,7 +1246,7 @@ export default function Home() {
                         </motion.a>
                         
                         <motion.a 
-                          href="https://linkedin.com" 
+                          href="https://www.linkedin.com/in/osamahash/" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="flex items-center px-3 py-2 bg-[#1E1E2A]/50 rounded-md hover:bg-[#1E1E2A] transition-colors text-[#e6f1ff]/80 hover:text-[#64ffda]"
@@ -1309,7 +1257,7 @@ export default function Home() {
                         </motion.a>
                         
                         <motion.a 
-                          href="https://twitter.com" 
+                          href="https://twitter.com/osamahashmi" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="flex items-center px-3 py-2 bg-[#1E1E2A]/50 rounded-md hover:bg-[#1E1E2A] transition-colors text-[#e6f1ff]/80 hover:text-[#64ffda]"
@@ -1320,7 +1268,7 @@ export default function Home() {
                         </motion.a>
                         
                         <motion.a 
-                          href="mailto:contact@osamahashmi.dev"
+                          href="mailto:hashmiosama555@gmail.com"
                           className="flex items-center px-3 py-2 bg-[#1E1E2A]/50 rounded-md hover:bg-[#1E1E2A] transition-colors text-[#e6f1ff]/80 hover:text-[#64ffda]"
                           whileHover={{ x: 3 }}
                         >
