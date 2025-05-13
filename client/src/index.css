@@ -23,7 +23,7 @@
   --destructive-foreground: 60 9.1% 97.8%;
   --ring: 20 14.3% 4.1%;
   --radius: 0.5rem;
-  
+
   /* Portfolio specific colors */
   --portfolio-primary: 214 70% 11%;      /* #0a192f */
   --portfolio-secondary: 172 100% 70%;   /* #64ffda */
@@ -64,11 +64,11 @@
   body {
     @apply font-sans antialiased bg-[#0a192f] text-[#e6f1ff];
   }
-  
+
   html {
     @apply scroll-smooth;
   }
-  
+
   /* Terminal styling */
   .typing-animation {
     width: 22ch;
@@ -77,28 +77,28 @@
     overflow: hidden;
     border-right: 3px solid #64ffda;
   }
-  
+
   @keyframes typing {
     from { width: 0 }
   }
-  
+
   @keyframes blink {
     50% { border-color: transparent }
   }
-  
+
   /* Loading bar animation */
   .loading-bar {
     width: 0%;
     animation: loadingProgress 1.8s ease-in-out forwards;
   }
-  
+
   @keyframes loadingProgress {
     0% { width: 0%; }
     50% { width: 70%; }
     75% { width: 85%; }
     100% { width: 100%; }
   }
-  
+
   /* 3D code effect for sections */
   .code-block {
     position: relative;
@@ -108,7 +108,7 @@
     border-radius: 0.5rem;
     border-left: 4px solid #64ffda;
   }
-  
+
   .code-block-header {
     display: flex;
     justify-content: space-between;
@@ -117,13 +117,13 @@
     background: #121212;
     border-bottom: 1px solid #2d2d3a;
   }
-  
+
   .code-block-content {
     padding: 1rem;
     white-space: pre;
     overflow-x: auto;
   }
-  
+
   .code-block .line-numbers {
     position: absolute;
     left: 0;
@@ -136,11 +136,11 @@
     border-right: 1px solid #2d2d3a;
     user-select: none;
   }
-  
+
   .code-block .code-content {
     margin-left: 3.5rem;
   }
-  
+
   /* Code color highlighting */
   .code-keyword { color: #ff79c6; }
   .code-function { color: #50fa7b; }
@@ -213,43 +213,48 @@
     color: #8b5cf6;
     opacity: 0.5;
   }
-  
+
   .nav-link {
     @apply relative;
   }
-  
+
   .nav-link::after {
     @apply content-[''] absolute -bottom-[5px] left-0 w-0 h-[2px] bg-[#64ffda] transition-all duration-300;
   }
-  
+
   .nav-link:hover::after {
     @apply w-full;
   }
-  
+
   .three-canvas {
     @apply absolute top-0 left-0 -z-10;
   }
-  
+
   .card-hover {
     @apply transition-all duration-500 ease-in-out;
   }
-  
+
   .card-hover:hover {
     @apply -translate-y-[10px] shadow-2xl;
   }
-  
+
   .skill-bar {
-    @apply h-2 rounded-sm bg-[rgba(100,255,218,0.2)] overflow-hidden;
-  }
-  
-  .skill-progress {
-    @apply h-full rounded-sm bg-gradient-to-r from-[#64ffda] to-[#8b5cf6];
-  }
-  
+  @apply h-2.5 rounded-full bg-[rgba(100,255,218,0.1)] overflow-hidden backdrop-blur-sm transition-all duration-300;
+}
+
+.skill-progress {
+  @apply h-full rounded-full bg-gradient-to-r from-[#64ffda] to-[#8b5cf6] transition-all duration-500;
+  box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
+}
+
+.skill-progress:hover {
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+}
+
   .progress-animate {
     animation: progressAnim 1.5s ease-out forwards;
   }
-  
+
   /* Scroll reveal animations */
   .reveal {
     position: relative;
@@ -257,81 +262,81 @@
     transform: translateY(60px);
     transition: all 1s ease;
   }
-  
+
   .reveal.active {
     opacity: 1;
     transform: translateY(0);
   }
-  
+
   /* Stagger children animations */
   .stagger-children > * {
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.6s ease;
   }
-  
+
   .stagger-children.active > *:nth-child(1) {
     opacity: 1;
     transform: translateY(0);
     transition-delay: 0.1s;
   }
-  
+
   .stagger-children.active > *:nth-child(2) {
     opacity: 1;
     transform: translateY(0);
     transition-delay: 0.2s;
   }
-  
+
   .stagger-children.active > *:nth-child(3) {
     opacity: 1;
     transform: translateY(0);
     transition-delay: 0.3s;
   }
-  
+
   .stagger-children.active > *:nth-child(4) {
     opacity: 1;
     transform: translateY(0);
     transition-delay: 0.4s;
   }
-  
+
   .stagger-children.active > *:nth-child(5) {
     opacity: 1;
     transform: translateY(0);
     transition-delay: 0.5s;
   }
-  
+
   /* Zoom effect on scroll */
   .zoom-in-scroll {
     transform: scale(0.95);
     transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
   }
-  
+
   .zoom-in-scroll.active {
     transform: scale(1);
   }
-  
+
   /* Blur-in effect */
   .blur-in {
     filter: blur(10px);
     opacity: 0;
     transition: all 1s ease;
   }
-  
+
   .blur-in.active {
     filter: blur(0);
     opacity: 1;
   }
-  
+
   /* Rotating card effect */
   .rotate-card {
     perspective: 1000px;
     transform-style: preserve-3d;
   }
-  
+
   .rotate-card:hover .card-inner {
     transform: rotateY(180deg);
   }
-  
+
   .card-inner {
     position: relative;
     width: 100%;
@@ -339,25 +344,25 @@
     transition: transform 0.8s;
     transform-style: preserve-3d;
   }
-  
+
   .card-front, .card-back {
     position: absolute;
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
   }
-  
+
   .card-back {
     transform: rotateY(180deg);
   }
-  
+
   /* Glow effect on hover */
   .glow-on-hover {
     position: relative;
     z-index: 1;
     overflow: hidden;
   }
-  
+
   .glow-on-hover::before {
     content: '';
     position: absolute;
@@ -371,37 +376,37 @@
     transition: opacity 0.5s ease;
     animation: rotate 4s linear infinite;
   }
-  
+
   .glow-on-hover:hover::before {
     opacity: 0.15;
   }
-  
+
   @keyframes rotate {
     100% {
       transform: rotate(360deg);
     }
   }
-  
+
   /* Progress animation */
   @keyframes progressAnim {
     from { width: 0; }
     to { width: var(--progress); }
   }
-  
+
   /* Text reveal animation */
   .text-reveal {
     position: relative;
     display: inline-block;
     overflow: hidden;
   }
-  
+
   .text-reveal span {
     display: inline-block;
     transform: translateY(100%);
     opacity: 0;
     transition: all 0.5s ease;
   }
-  
+
   .text-reveal.active span {
     transform: translateY(0);
     opacity: 1;

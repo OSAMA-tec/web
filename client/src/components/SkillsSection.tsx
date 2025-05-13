@@ -1,3 +1,4 @@
+
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Code, Server, Cog } from "lucide-react";
@@ -61,73 +62,72 @@ export default function SkillsSection() {
   ];
   
   useAnimateProgress(isInView);
-  
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-  
-  const childVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
 
   return (
-    <section id="skills" className="py-20 bg-[#121212]" ref={sectionRef}>
+    <section id="skills" className="py-20 bg-gradient-to-b from-[#0a192f] to-[#121212]" ref={sectionRef}>
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl font-bold font-poppins mb-2 text-center">
+          <h2 className="text-4xl font-bold font-poppins mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#64ffda] to-[#8b5cf6]">
             <span className="text-[#64ffda]">02.</span> Skills & Technologies
           </h2>
-          <div className="h-1 w-32 bg-[#8b5cf6]/50 mb-12 mx-auto"></div>
+          <div className="h-1 w-32 bg-gradient-to-r from-[#64ffda] to-[#8b5cf6] mb-8 mx-auto rounded-full"></div>
         </motion.div>
         
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.2 }
+            }
+          }}
         >
           {skillCategories.map((category, index) => (
             <motion.div 
               key={index}
-              className="bg-[#0a192f]/50 rounded-lg p-6 shadow-lg"
-              variants={childVariants}
+              className="bg-[#1E1E2A]/80 backdrop-blur-sm rounded-xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-[#64ffda]/10 hover:border-[#64ffda]/30"
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: 0.6,
+                    ease: "easeOut"
+                  }
+                }
+              }}
             >
-              <div className="flex items-center mb-6">
-                {category.icon}
-                <h3 className="text-xl font-semibold font-poppins ml-4">{category.title}</h3>
+              <div className="flex items-center mb-8">
+                <div className="p-3 bg-[#64ffda]/10 rounded-lg">
+                  {category.icon}
+                </div>
+                <h3 className="text-2xl font-semibold font-poppins ml-4 text-[#e6f1ff]">{category.title}</h3>
               </div>
               
-              <div className="space-y-5">
+              <div className="space-y-6">
                 {category.skills.map((skill, skillIndex) => (
-                  <div key={skillIndex}>
-                    <div className="flex justify-between mb-2">
-                      <span>{skill.name}</span>
-                      <span>{skill.percentage}%</span>
+                  <div key={skillIndex} className="group">
+                    <div className="flex justify-between mb-3">
+                      <span className="text-[#e6f1ff] group-hover:text-[#64ffda] transition-colors duration-300">{skill.name}</span>
+                      <span className="text-[#8b5cf6]">{skill.percentage}%</span>
                     </div>
-                    <div className="skill-bar">
-                      <div 
-                        className="skill-progress"
-                        style={{ "--progress": `${skill.percentage}%` } as React.CSSProperties}
-                      ></div>
+                    <div className="h-2.5 rounded-full bg-[#64ffda]/10 overflow-hidden">
+                      <motion.div 
+                        className="h-full rounded-full bg-gradient-to-r from-[#64ffda] to-[#8b5cf6] group-hover:from-[#8b5cf6] group-hover:to-[#64ffda] transition-all duration-500"
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${skill.percentage}%` }}
+                        transition={{ duration: 1, delay: 0.1 * skillIndex }}
+                        viewport={{ once: true }}
+                      ></motion.div>
                     </div>
                   </div>
                 ))}
