@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import Terminal from "./components/Terminal";
 import SocialFloaters from "./components/SocialFloaters";
 import { useLocation } from "wouter";
+import { ThemeProvider } from "./hooks/use-theme";
 
 function Router() {
   return (
@@ -47,8 +48,9 @@ function App() {
   }, []);
 
   return (
-    <TooltipProvider>
-      <Toaster />
+    <ThemeProvider>
+      <TooltipProvider>
+        <Toaster />
       
       {/* Loading screen */}
       {loading && (
@@ -87,6 +89,7 @@ function App() {
       {/* Main content */}
       <Router />
     </TooltipProvider>
+    </ThemeProvider>
   );
 }
 

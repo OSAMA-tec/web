@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "wouter";
+import ThemeToggle from "./ThemeToggle";
 
 interface HeaderProps {
   isMobileMenuOpen: boolean;
@@ -49,7 +50,7 @@ export default function Header({ isMobileMenuOpen, setIsMobileMenuOpen }: Header
           <a href="#home" className="text-2xl font-bold font-poppins text-[#64ffda]">
             OH<span className="text-[#8b5cf6]">.</span>
           </a>
-          
+
           <div className="hidden md:block">
             <nav className="flex space-x-8">
               <a href="#home" className="nav-link text-[#e6f1ff] hover:text-[#64ffda] transition-colors duration-300">
@@ -67,9 +68,10 @@ export default function Header({ isMobileMenuOpen, setIsMobileMenuOpen }: Header
               <a href="#contact" className="nav-link text-[#e6f1ff] hover:text-[#64ffda] transition-colors duration-300">
                 Contact
               </a>
+              <ThemeToggle />
             </nav>
           </div>
-          
+
           <button 
             id="mobile-menu-button" 
             className="md:hidden text-[#e6f1ff] focus:outline-none"
@@ -84,7 +86,7 @@ export default function Header({ isMobileMenuOpen, setIsMobileMenuOpen }: Header
           </button>
         </div>
       </div>
-      
+
       {/* Mobile menu */}
       <div 
         id="mobile-menu" 

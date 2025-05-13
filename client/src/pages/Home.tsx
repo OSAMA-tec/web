@@ -6,8 +6,10 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { 
   Eye, Layers, Code, Database, Mail, Github, Linkedin, Twitter, X, 
   MessageSquare, ChevronsRight, Terminal, Cpu, GitBranch, Coffee, Zap,
-  ChevronDown, Sparkles
+  ChevronDown, Sparkles, Sun, Moon, ExternalLink
 } from "lucide-react";
+import { projectsData } from "@/data/projectsData";
+import { useTheme } from "@/hooks/use-theme";
 
 // Code animation component for developer-themed sections
 function CodeBlock({ 
