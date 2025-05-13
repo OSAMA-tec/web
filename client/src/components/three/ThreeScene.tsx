@@ -47,7 +47,7 @@ export default function ThreeScene() {
     window.addEventListener('resize', setCanvasDimensions);
     
     // Create particles
-    const particleCount = isMobile ? 70 : 200;
+    const particleCount = isMobile ? 100 : 300;
     
     interface Particle {
       x: number;
