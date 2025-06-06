@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import useScrollReveal from "@/lib/useScrollReveal";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useAdvancedMobile, useIsMobile } from "@/hooks/use-mobile";
+import ResponsiveContainer from "@/components/ResponsiveContainer";
 import {
   Eye, Layers, Code, Database, Mail, Github, Linkedin, Twitter, X,
   MessageSquare, ChevronsRight, Terminal, Cpu, GitBranch, Coffee, Zap,
@@ -9,11 +10,11 @@ import {
 } from "lucide-react";
 import { projectsData } from "@/data/projectsData";
 import { useTheme } from "@/hooks/use-theme";
-import ParticleSystem from "@/components/ParticleSystem";
-import EnhancedButton from "@/components/EnhancedButton";
-import EnhancedCard from "@/components/EnhancedCard";
-import EnhancedLoader from "@/components/EnhancedLoader";
-import BackgroundEffects from "@/components/BackgroundEffects";
+
+import CodeEditor from "@/components/CodeEditor";
+import DeveloperTerminal from "@/components/DeveloperTerminal";
+import GitHubContributions from "@/components/GitHubContributions";
+import ProjectShowcase from "@/components/ProjectShowcase";
 import { fadeInUp, staggerContainer, staggerItem, hoverLift } from "@/lib/animations";
 
 // Code animation component for developer-themed sections
@@ -277,13 +278,14 @@ function SkillCard({
       transition={{ duration: 0.6, delay: isMobile ? 0.1 : delay }}
       viewport={{ once: true, margin: "-50px" }}
     >
-      <EnhancedCard
-        variant="glow"
-        hover3D={true}
-        gradient={true}
-        header={header}
-        className="h-full"
+      <div
+        className="h-full p-6 rounded-lg border"
+        style={{
+          backgroundColor: colors.card,
+          borderColor: colors.border,
+        }}
       >
+        {header}
         <div className="space-y-5">
           {skills.map((skill, skillIndex) => (
             <motion.div
@@ -351,7 +353,7 @@ function SkillCard({
             </motion.div>
           ))}
         </div>
-      </EnhancedCard>
+      </div>
     </motion.div>
   );
 }
@@ -360,7 +362,7 @@ function SkillCard({
 export default function Home() {
   const [typedText, setTypedText] = useState("");
   const typingRef = useRef<HTMLSpanElement>(null);
-  const isMobile = useIsMobile();
+  const { isMobile, isTablet, isLowPowerMode, touchDevice, screenSize } = useAdvancedMobile();
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
   const { theme, getThemeColors } = useTheme();
@@ -397,73 +399,30 @@ export default function Home() {
 
   return (
     <main className="relative">
-      {/* Enhanced Background Effects */}
-      <BackgroundEffects
-        variant="particles"
-        intensity={isMobile ? 'low' : 'medium'}
-        interactive={true}
+      {/* Simple background gradient - no heavy animations */}
+      <div
+        className="fixed inset-0 -z-10"
+        style={{
+          background: colors.background,
+          opacity: 0.8
+        }}
       />
 
       {/* Hero Section - Developer Themed */}
-      <section id="home" className="min-h-screen flex flex-col justify-center pt-16 relative overflow-hidden">
-        {/* Enhanced particle system background */}
-        <ParticleSystem
-          particleCount={isMobile ? 20 : 40}
-          interactive={true}
-          className="opacity-60"
-          showTrails={false}
-          performance={isMobile ? 'low' : 'medium'}
-          enableGlow={true}
-        />
-        
-        {/* Animated code background - optimized rendering */}
-        <div className="absolute inset-0 overflow-hidden opacity-5 z-0">
-          <div className="code-rain will-change-transform">
-            {Array.from({ length: isMobile ? 8 : 15 }).map((_, i) => (
-              <motion.div 
-                key={i}
-                className="code-line text-xs font-mono text-[#64ffda]"
-                initial={{ y: -100, x: Math.random() * 100 - 50, opacity: 0 }}
-                animate={{ 
-                  y: ["0%", "100%"], 
-                  opacity: [0, 0.8, 0.2],
-                  transition: { 
-                    y: { 
-                      duration: 10 + Math.random() * 20, 
-                      repeat: Infinity,
-                      repeatType: "loop",
-                      ease: "linear" 
-                    },
-                    opacity: {
-                      duration: 4,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      ease: "easeInOut"
-                    }
-                  }
-                }}
-                style={{
-                  position: 'absolute',
-                  left: `${(i * 7) % 100}%`,
-                  willChange: 'transform, opacity'
-                }}
-              >
-                {Array.from({ length: isMobile ? 5 : 10 }).map((_, j) => (
-                  <div key={j} className="my-1">
-                    {['const', 'function', 'let', 'import', 'export', 'return', 'await', 'async', 'class', '<div>'][Math.floor(Math.random() * 10)]}
-                    {Math.random() > 0.5 ? '()' : ''}
-                    {Math.random() > 0.7 ? ' {' : ''}
-                    {Math.random() > 0.8 ? ' }' : ''}
-                    {Math.random() > 0.5 ? ';' : ''}
-                  </div>
-                ))}
-              </motion.div>
-            ))}
-          </div>
+      <ResponsiveContainer
+        className="min-h-screen flex flex-col justify-center pt-16 relative overflow-hidden"
+        mobileClassName="pt-12 px-4"
+        tabletClassName="pt-14 px-6"
+        optimizeForTouch={true}
+      >
+        <section id="home">
+        {/* Simple tech-themed background */}
+        <div className="absolute inset-0 z-0 opacity-10">
+          <div className="absolute top-10 left-10 text-6xl" style={{ color: colors.secondary }}>{'{'}</div>
+          <div className="absolute top-20 right-20 text-4xl" style={{ color: colors.accent }}>{'</>'}</div>
+          <div className="absolute bottom-20 left-20 text-5xl" style={{ color: colors.secondary }}>{'()'}</div>
+          <div className="absolute bottom-10 right-10 text-3xl" style={{ color: colors.accent }}>{';'}</div>
         </div>
-
-        {/* Circuit board pattern - optimized for performance */}
-        <div className="absolute inset-0 z-0 circuit-pattern opacity-5 will-change-transform"></div>
 
         <div className="container mx-auto px-4 sm:px-6 z-10 relative">
           <div className="max-w-3xl mx-auto">
@@ -482,7 +441,16 @@ export default function Home() {
             </motion.div>
 
             <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
+              className={`font-bold mb-6 ${
+                screenSize === 'xs' ? 'text-2xl' :
+                screenSize === 'sm' ? 'text-3xl' :
+                screenSize === 'md' ? 'text-4xl' :
+                'text-4xl sm:text-5xl md:text-6xl lg:text-7xl'
+              }`}
+              style={{
+                color: colors.foreground,
+                fontFamily: 'var(--font-display)'
+              }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -491,126 +459,67 @@ export default function Home() {
               <span style={{ color: colors.secondary }}>.</span>
               <span style={{ color: colors.foreground }}>Hashmi</span>
               <span style={{ color: colors.accent }}>()</span>
-              <motion.span
-                className="inline-block"
-                style={{ color: colors.secondary }}
-                animate={{
-                  opacity: [1, 0.5, 1],
-                  scale: [1, 1.05, 1]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatType: "reverse"
-                }}
-              >
-                <Sparkles className="inline-block w-8 h-8 ml-2" />
-              </motion.span>
+              <span style={{ color: colors.secondary, fontFamily: 'var(--font-mono)' }}> // Full Stack Developer</span>
             </motion.h1>
             
+            {/* Developer Terminal */}
             <motion.div
-              className="mb-8 font-mono text-base sm:text-lg p-4 rounded-md border-l-2 backdrop-blur-sm"
-              style={{
-                color: colors.foreground,
-                backgroundColor: colors.muted,
-                borderColor: colors.secondary,
-                boxShadow: `0 5px 30px ${colors.secondary}15`,
-                opacity: 0.9
-              }}
+              className="mb-8 max-w-2xl"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <div className="flex items-center">
-                <Terminal className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: colors.secondary }} />
-                <div className="flex flex-wrap items-center">
-                  <span className="mr-2" style={{ color: colors.accent }}>const</span>
-                  <span style={{ color: colors.secondary }}>role</span>
-                  <span className="mr-2" style={{ color: colors.foreground }}> = </span>
-                  <span style={{ color: colors.foreground }}>"Full Stack Developer";</span>
-                </div>
-              </div>
-              <div className="flex items-start mt-2">
-                <Terminal className="w-4 h-4 mr-2 mt-1 flex-shrink-0" style={{ color: colors.secondary }} />
-                <div>
-                  <div className="flex flex-wrap">
-                    <span className="mr-2" style={{ color: colors.accent }}>const</span>
-                    <span style={{ color: colors.secondary }}>description</span>
-                    <span className="mr-2" style={{ color: colors.foreground }}> = </span>
-                    <span style={{ color: colors.foreground }}>`</span>
-                  </div>
-                  <div className="pl-4 sm:pl-8 border-l my-2" style={{ borderColor: `${colors.accent}30` }}>
-                    <span ref={typingRef} className="break-words" style={{ color: `${colors.foreground}90` }}>{typedText}</span>
-                    <span className="animate-pulse" style={{ color: colors.secondary }}>|</span>
-                  </div>
-                  <div>
-                    <span style={{ color: colors.foreground }}>`;</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-wrap items-center mt-2">
-                <Terminal className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: colors.secondary }} />
-                <span className="mr-2" style={{ color: colors.accent }}>const</span>
-                <span style={{ color: colors.secondary }}>skills</span>
-                <span className="mr-2" style={{ color: colors.foreground }}> = </span>
-                <span style={{ color: colors.foreground }}>[</span>
-                <motion.span
-                  style={{ color: colors.secondary }}
-                  animate={{ opacity: [1, 0.5, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >"React"</motion.span>
-                <span style={{ color: colors.foreground }}>, </span>
-                <motion.span
-                  style={{ color: colors.accent }}
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >"Node.js"</motion.span>
-                <span style={{ color: colors.foreground }}>, </span>
-                <motion.span
-                  style={{ color: colors.secondary }}
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                >"TypeScript"</motion.span>
-                <span style={{ color: colors.foreground }}>];</span>
-              </div>
+              <DeveloperTerminal />
             </motion.div>
             
             <motion.div
               className="flex flex-wrap gap-4"
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              <EnhancedButton
-                variant="secondary"
-                size="lg"
-                icon={<Code size={18} />}
-                glow={true}
+              <motion.button
+                className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all"
+                style={{
+                  backgroundColor: colors.secondary,
+                  color: colors.primary,
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
               >
+                <Code size={18} />
                 View Projects
-              </EnhancedButton>
+              </motion.button>
 
-              <EnhancedButton
-                variant="primary"
-                size="lg"
-                icon={<Rocket size={18} />}
-                magnetic={true}
-                glow={true}
+              <motion.button
+                className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all"
+                style={{
+                  backgroundColor: colors.accent,
+                  color: colors.primary,
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
+                <Rocket size={18} />
                 Let's Connect
-              </EnhancedButton>
+              </motion.button>
 
-              <EnhancedButton
-                variant="ghost"
-                size="lg"
-                icon={<Github size={18} />}
+              <motion.button
+                className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium border transition-all"
+                style={{
+                  backgroundColor: 'transparent',
+                  color: colors.foreground,
+                  borderColor: colors.border,
+                }}
+                whileHover={{ scale: 1.05, backgroundColor: colors.muted }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => window.open('https://github.com/OSAMA-tec', '_blank')}
               >
+                <Github size={18} />
                 GitHub
-              </EnhancedButton>
+              </motion.button>
             </motion.div>
           </div>
         </div>
@@ -642,7 +551,8 @@ export default function Home() {
             <ChevronDown className="w-6 h-6" style={{ color: colors.secondary }} />
           </motion.div>
         </motion.div>
-      </section>
+        </section>
+      </ResponsiveContainer>
       
       {/* About Section - Code-themed */}
       <section id="about" className="py-20 bg-gradient-to-b from-[#0a192f] to-[#121212]">
@@ -806,8 +716,45 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Skills Section - Code-themed with floating cards */}
-      <section id="skills" className="py-20 bg-gradient-to-b from-[#121212] to-[#0a192f]/90 relative overflow-hidden">
+      {/* GitHub Activity Section */}
+      <section id="activity" className="py-20 relative" style={{ background: `linear-gradient(135deg, ${colors.muted}10, ${colors.background})` }}>
+        <ResponsiveContainer>
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <h2
+              className="text-3xl md:text-4xl font-bold mb-4"
+              style={{
+                background: `linear-gradient(135deg, ${colors.foreground}, ${colors.secondary})`,
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                color: 'transparent',
+                fontFamily: 'var(--font-display)'
+              }}
+            >
+              <span style={{ color: colors.secondary }}>03.</span> Development Activity
+            </h2>
+            <div
+              className="h-1 w-32 mb-6 mx-auto rounded-full"
+              style={{ background: colors.gradient }}
+            />
+            <p
+              className="max-w-2xl mx-auto text-sm md:text-base"
+              style={{
+                color: colors.muted,
+                fontFamily: 'var(--font-primary)'
+              }}
+            >
+              My coding journey and contribution patterns over the past year
+            </p>
+          </motion.div>
+
+          <GitHubContributions />
+        </ResponsiveContainer>
         {/* Background code pattern - reduced for mobile */}
         <div className="absolute inset-0 opacity-[0.07] z-0">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 h-full overflow-hidden">
@@ -850,196 +797,138 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">
-              <span className="text-[#64ffda]">03.</span> <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e6f1ff] to-[#64ffda]">Technical Skills</span>
-            </h2>
-            <div className="h-1 w-32 bg-gradient-to-r from-[#64ffda] to-[#8b5cf6] mb-6 mx-auto rounded-full"></div>
-            <p className="text-[#e6f1ff]/70 max-w-2xl mx-auto text-sm md:text-base">
-              My technical toolkit includes a range of modern web technologies, allowing me to build complete applications from concept to deployment.
-            </p>
-          </motion.div>
-          
-          {/* Skill Categories with 3D-like floating cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            <SkillCard
-              title="Frontend Development"
-              icon={<Layers className="text-[#64ffda] w-10 h-10" />}
-              skills={[
-                { name: "React.js", level: "Advanced", percentage: 95, color: "#61DAFB" },
-                { name: "JavaScript (ES6+)", level: "Advanced", percentage: 92, color: "#F7DF1E" },
-                { name: "Redux", level: "Advanced", percentage: 90, color: "#764ABC" },
-                { name: "Next.js", level: "Advanced", percentage: 88, color: "#000000" },
-                { name: "HTML5 & CSS3", level: "Advanced", percentage: 95, color: "#E34F26" },
-                { name: "Tailwind CSS", level: "Advanced", percentage: 90, color: "#06B6D4" }
-              ]}
-              delay={0.1}
-            />
-            
-            <SkillCard
-              title="Backend Development"
-              icon={<Database className="text-[#64ffda] w-10 h-10" />}
-              skills={[
-                { name: "Node.js", level: "Advanced", percentage: 90, color: "#339933" },
-                { name: "Express.js", level: "Advanced", percentage: 88, color: "#000000" },
-                { name: "MongoDB", level: "Advanced", percentage: 85, color: "#47A248" },
-                { name: "RESTful APIs", level: "Advanced", percentage: 92, color: "#FF9580" },
-                { name: "Firebase", level: "Intermediate", percentage: 80, color: "#FFCA28" },
-                { name: "Socket.io", level: "Intermediate", percentage: 78, color: "#010101" }
-              ]}
-              delay={0.2}
-            />
-            
-            <SkillCard
-              title="DevOps & Tools"
-              icon={<Cpu className="text-[#64ffda] w-10 h-10" />}
-              skills={[
-                { name: "Git & GitHub", level: "Advanced", percentage: 90, color: "#F05032" },
-                { name: "Docker", level: "Intermediate", percentage: 75, color: "#2496ED" },
-                { name: "AWS", level: "Intermediate", percentage: 70, color: "#FF9900" },
-                { name: "CI/CD", level: "Intermediate", percentage: 75, color: "#4CAF50" },
-                { name: "Postman", level: "Advanced", percentage: 85, color: "#FF6C37" },
-                { name: "Figma & UI/UX", level: "Intermediate", percentage: 80, color: "#F24E1E" }
-              ]}
-              delay={0.3}
-            />
-          </div>
-          
-          {/* Current Focus Area */}
-          <motion.div
-            className="relative max-w-4xl mx-auto bg-[#1E1E2A]/70 border border-[#64ffda]/20 p-6 rounded-xl backdrop-blur-sm"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            viewport={{ once: true, margin: "-50px" }}
-          >
-            <div className="absolute top-0 right-0 mt-4 mr-4">
-              <div className="flex space-x-1">
-                {[0, 1, 2].map((i) => (
-                  <motion.div
-                    key={i}
-                    className="w-2 h-2 rounded-full bg-[#64ffda]"
-                    animate={{ opacity: [0.2, 1, 0.2] }}
-                    transition={{ duration: 1.5, delay: i * 0.3, repeat: Infinity }}
-                  />
-                ))}
-              </div>
-            </div>
-            
-            <h3 className="font-semibold text-lg mb-3 text-[#64ffda] flex items-center">
-              <Zap className="w-5 h-5 mr-2" /> Current Focus Areas
-            </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                { name: "Three.js & WebGL", icon: <Code className="w-4 h-4" />, color: "#8B5CF6" },
-                { name: "AI Integration", icon: <Cpu className="w-4 h-4" />, color: "#64FFDA" },
-                { name: "Next.js & SSR", icon: <GitBranch className="w-4 h-4" />, color: "#FF9580" },
-              ].map((focus, idx) => (
-                <motion.div
-                  key={idx}
-                  className="flex items-center p-3 rounded-md bg-[#0a192f]/50 border border-[#64ffda]/10"
-                  whileHover={{ scale: 1.03, backgroundColor: "rgba(100,255,218,0.1)" }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className={`p-2 rounded-full mr-3`} style={{ backgroundColor: `${focus.color}20` }}>
-                    <div className="text-[#e6f1ff]">{focus.icon}</div>
-                  </div>
-                  <span className="text-[#e6f1ff]">{focus.name}</span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+
       </section>
       
-      {/* Projects Section */}
-      <section id="projects" className="py-20 bg-gradient-to-b from-[#121212] to-[#0a192f]">
-        <div className="container mx-auto px-4 sm:px-6">
-          <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <h2 className="text-3xl font-bold mb-2">
-              <span className="text-[#64ffda]">04.</span> Projects
-            </h2>
-            <div className="h-1 w-32 bg-[#8b5cf6]/50 mb-2 mx-auto"></div>
-            <p className="text-center text-[#e6f1ff]/70 max-w-2xl mx-auto">
-              Here's a selection of my recent projects. Each one showcases different skills and technologies.
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <ProjectCard 
-              title="BlockVest"
-              description="NFT marketplace enabling users to buy, sell, and trade digital assets as NFTs. Incorporated machine learning algorithms to predict future NFT value trends for informed decision-making."
-              tags={["Blockchain", "Machine Learning", "React", "Node.js", "Solidity"]}
-              image="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80"
-              link="https://example.com/blockvest"
-              githubLink="https://github.com/OSAMA-tec/blockvest"
-              delay={0.1}
-            />
-            
-            <ProjectCard 
-              title="Emiteer Clone"
-              description="Web application incorporating Twilio for voice calling, enabling seamless real-time communication between web users and web-to-phone lines, with live SMS functionality for improved messaging efficiency."
-              tags={["React", "Node.js", "Twilio", "WebRTC", "Express"]}
-              image="https://images.unsplash.com/photo-1607082349566-187342175e2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80"
-              link="https://example.com/emiteer-clone"
-              githubLink="https://github.com/OSAMA-tec/emiteer-clone"
-              delay={0.2}
-            />
-            
-            <ProjectCard 
-              title="IDO-CRM"
-              description="Comprehensive CRM solution with systems for accounting, sales pipelines, security staffing, and ATIS complaint management. Focus on backend systems ensuring seamless integration across diverse applications."
-              tags={["Node.js", "Express", "MongoDB", "React", "Redux"]}
-              image="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80"
-              link="https://example.com/ido-crm"
-              githubLink="https://github.com/OSAMA-tec/ido-crm"
-              delay={0.3}
-            />
-            
-            <ProjectCard 
-              title="E-Commerce Platform"
-              description="Full-stack e-commerce solution with product catalog, shopping cart, user authentication, and payment integration. Features admin dashboard for inventory management."
-              tags={["React", "Redux", "MongoDB", "Express", "Stripe"]}
-              image="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80"
-              link="https://example.com/ecommerce"
-              githubLink="https://github.com/OSAMA-tec/ecommerce"
-              delay={0.4}
-            />
-            
-            <ProjectCard 
-              title="Real Estate Platform"
-              description="Developed a property listing platform with search functionality, virtual tours, appointment scheduling, and agent profile management."
-              tags={["React", "Node.js", "MongoDB", "Express"]}
-              image="https://images.unsplash.com/photo-1593720213428-28a5b9e94613?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80"
-              githubLink="https://github.com/OSAMA-tec/real-estate"
-              delay={0.5}
-            />
-            
-            <ProjectCard 
-              title="Task Management System"
-              description="Collaborative task management application with project organization, deadline tracking, file sharing, and team communication features."
-              tags={["React", "Redux", "Node.js", "MongoDB"]}
-              image="https://images.pixabay.com/photo/2017/08/10/08/47/code-2620118_1280.jpg"
-              link="https://example.com/task-manager"
-              githubLink="https://github.com/OSAMA-tec/task-manager"
-              delay={0.6}
-            />
+      {/* Enhanced Projects Section */}
+      <section id="projects" className="py-20 relative overflow-hidden" style={{
+        background: `linear-gradient(135deg, ${colors.primary}, ${colors.muted}15)`
+      }}>
+        {/* Background decorations */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-20 left-10 text-6xl" style={{ color: colors.secondary }}>{'{'}</div>
+          <div className="absolute top-40 right-20 text-4xl" style={{ color: colors.accent }}>{'</>'}</div>
+          <div className="absolute bottom-40 left-20 text-5xl" style={{ color: colors.secondary }}>{'()'}</div>
+          <div className="absolute bottom-20 right-10 text-3xl" style={{ color: colors.accent }}>{';'}</div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-8xl opacity-20" style={{ color: colors.secondary }}>
+            💻
           </div>
         </div>
+
+        <ResponsiveContainer>
+          <motion.div
+            className="text-center mb-20 relative z-10"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="inline-block mb-6"
+            >
+              <div className="text-6xl mb-4">🚀</div>
+            </motion.div>
+
+            <h2
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+              style={{
+                background: `linear-gradient(135deg, ${colors.foreground}, ${colors.secondary}, ${colors.accent})`,
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                color: 'transparent',
+                fontFamily: 'var(--font-display)',
+                letterSpacing: '2px',
+              }}
+            >
+              <span style={{ color: colors.secondary }}>04.</span> Featured Projects
+            </h2>
+
+            <motion.div
+              className="h-2 w-40 mb-8 mx-auto rounded-full"
+              style={{
+                background: `linear-gradient(90deg, ${colors.secondary}, ${colors.accent}, ${colors.secondary})`,
+                backgroundSize: '200% 100%'
+              }}
+              animate={{
+                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+
+            <p
+              className="max-w-3xl mx-auto text-lg md:text-xl leading-relaxed"
+              style={{
+                color: colors.muted,
+                fontFamily: 'var(--font-primary)',
+                fontWeight: '500',
+              }}
+            >
+              Explore my portfolio of full-stack applications, each built with modern technologies
+              and designed to solve real-world problems. From concept to deployment,
+              these projects showcase my development journey and technical expertise.
+            </p>
+
+            {/* Project stats */}
+            <motion.div
+              className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              {[
+                { label: 'Projects', value: '12+', icon: '💼' },
+                { label: 'Technologies', value: '20+', icon: '⚡' },
+                { label: 'Code Lines', value: '50K+', icon: '📝' },
+                { label: 'Commits', value: '1K+', icon: '🔄' },
+              ].map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  className="text-center p-4 rounded-xl"
+                  style={{
+                    background: `linear-gradient(135deg, ${colors.card}80, ${colors.muted}20)`,
+                    border: `1px solid ${colors.border}`,
+                    backdropFilter: 'blur(10px)',
+                  }}
+                  whileHover={{
+                    scale: 1.05,
+                    y: -5,
+                    boxShadow: `0 10px 30px ${colors.secondary}20`
+                  }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className="text-2xl mb-2">{stat.icon}</div>
+                  <div
+                    className="text-2xl font-bold mb-1"
+                    style={{
+                      color: colors.secondary,
+                      fontFamily: 'var(--font-display)',
+                    }}
+                  >
+                    {stat.value}
+                  </div>
+                  <div
+                    className="text-sm font-medium"
+                    style={{
+                      color: colors.muted,
+                      fontFamily: 'var(--font-primary)',
+                    }}
+                  >
+                    {stat.label}
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          <ProjectShowcase />
+        </ResponsiveContainer>
       </section>
       
       {/* Contact Section */}

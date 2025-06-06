@@ -9,7 +9,6 @@ import SocialFloaters from "./components/SocialFloaters";
 import EnhancedNavigation from "./components/EnhancedNavigation";
 import ScrollProgress from "./components/ScrollProgress";
 import PerformanceMonitor from "./components/PerformanceMonitor";
-import EnhancedLoader from "./components/EnhancedLoader";
 import { useLocation } from "wouter";
 import { ThemeProvider } from "./hooks/theme-context";
 
@@ -63,13 +62,23 @@ function App() {
       <TooltipProvider>
         <Toaster />
 
-      {/* Enhanced Loading screen */}
-      <EnhancedLoader
-        isLoading={loading}
-        progress={loadingProgress}
-        message="Initializing Portfolio..."
-        variant="detailed"
-      />
+      {/* Simple loading screen */}
+      {loading && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ backgroundColor: 'var(--theme-primary)' }}
+        >
+          <div className="text-center">
+            <div
+              className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin mx-auto mb-4"
+              style={{ borderColor: 'var(--theme-secondary)' }}
+            />
+            <p style={{ color: 'var(--theme-foreground)' }}>
+              Loading Portfolio... {Math.round(loadingProgress)}%
+            </p>
+          </div>
+        </div>
+      )}
       
       {/* Enhanced Navigation */}
       <EnhancedNavigation />
