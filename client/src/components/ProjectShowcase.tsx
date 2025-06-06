@@ -137,10 +137,11 @@ export default function ProjectShowcase({ className = '' }: { className?: string
   return (
     <div className={`project-showcase ${className}`}>
       <div
+        className={`${isMobile ? 'mobile-grid-1 mobile-gap-4' : ''}`}
         style={{
           display: 'grid',
           gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(400px, 1fr))',
-          gap: '24px',
+          gap: isMobile ? '16px' : '32px',
         }}
       >
         {projects.map((project, index) => (
@@ -148,53 +149,103 @@ export default function ProjectShowcase({ className = '' }: { className?: string
             key={project.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className={`glass ${isMobile ? 'mobile-optimized' : ''}`}
             style={{
               background: `linear-gradient(135deg, ${colors.card}95, ${colors.muted}20)`,
-              border: `1px solid ${colors.border}`,
-              borderRadius: '20px',
+              border: `2px solid ${colors.border}`,
+              borderRadius: isMobile ? '16px' : '24px',
               overflow: 'hidden',
               backdropFilter: 'blur(20px)',
               cursor: 'pointer',
               position: 'relative',
-              boxShadow: `0 8px 32px ${colors.secondary}10`,
+              boxShadow: `0 12px 40px ${colors.secondary}15`,
             }}
             whileHover={{
-              y: -8,
-              boxShadow: `0 16px 48px ${colors.secondary}25`,
-              borderColor: `${colors.secondary}60`,
-              scale: 1.02
+              y: isMobile ? -4 : -8,
+              boxShadow: `0 20px 60px ${colors.secondary}30`,
+              borderColor: `${colors.secondary}80`,
+              scale: isMobile ? 1.01 : 1.02
+            }}
+            transition={{
+              duration: 0.5,
+              delay: index * 0.1,
+              type: "spring",
+              stiffness: 200
             }}
             onClick={() => setSelectedProject(selectedProject === project.id ? null : project.id)}
           >
             {/* Enhanced Project Header */}
-            <div style={{ padding: isMobile ? '20px' : '24px', position: 'relative' }}>
-              {/* Background decoration */}
+            <div
+              className={isMobile ? 'mobile-optimized' : ''}
+              style={{
+                padding: isMobile ? '16px' : '28px',
+                position: 'relative'
+              }}
+            >
+              {/* Enhanced Background decoration */}
               <div
                 style={{
                   position: 'absolute',
                   top: 0,
                   right: 0,
-                  width: '100px',
-                  height: '100px',
-                  background: `radial-gradient(circle, ${colors.secondary}10 0%, transparent 70%)`,
+                  width: isMobile ? '60px' : '100px',
+                  height: isMobile ? '60px' : '100px',
+                  background: `radial-gradient(circle, ${colors.secondary}15 0%, transparent 70%)`,
                   borderRadius: '50%',
                   pointerEvents: 'none',
                 }}
               />
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', position: 'relative', zIndex: 2 }}>
+              {/* Floating particles */}
+              {!isMobile && (
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  {[...Array(3)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-1 h-1 rounded-full opacity-30"
+                      style={{
+                        backgroundColor: colors.secondary,
+                        top: `${20 + i * 25}%`,
+                        right: `${10 + i * 15}%`,
+                      }}
+                      animate={{
+                        y: [0, -10, 0],
+                        opacity: [0.3, 0.7, 0.3],
+                      }}
+                      transition={{
+                        duration: 2 + i,
+                        repeat: Infinity,
+                        delay: i * 0.5,
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                marginBottom: isMobile ? '12px' : '20px',
+                position: 'relative',
+                zIndex: 2,
+                flexWrap: isMobile ? 'wrap' : 'nowrap',
+                gap: isMobile ? '8px' : '0'
+              }}>
                 <h3
+                  className={`gradient-text ${isMobile ? 'mobile-text-lg' : ''}`}
                   style={{
-                    background: `linear-gradient(135deg, ${colors.foreground}, ${colors.secondary})`,
+                    background: `linear-gradient(135deg, ${colors.foreground}, ${colors.secondary}, ${colors.accent})`,
                     backgroundClip: 'text',
                     WebkitBackgroundClip: 'text',
                     color: 'transparent',
-                    fontSize: isMobile ? '20px' : '24px',
-                    fontWeight: '700',
+                    fontSize: isMobile ? '18px' : '26px',
+                    fontWeight: '800',
                     margin: 0,
                     fontFamily: 'var(--font-display)',
                     letterSpacing: '0.5px',
+                    textShadow: `0 0 20px ${colors.secondary}30`,
+                    backgroundSize: '200% 200%',
                   }}
                 >
                   {project.title}

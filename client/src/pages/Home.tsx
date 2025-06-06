@@ -416,12 +416,110 @@ export default function Home() {
         optimizeForTouch={true}
       >
         <section id="home">
-        {/* Simple tech-themed background */}
-        <div className="absolute inset-0 z-0 opacity-10">
-          <div className="absolute top-10 left-10 text-6xl" style={{ color: colors.secondary }}>{'{'}</div>
-          <div className="absolute top-20 right-20 text-4xl" style={{ color: colors.accent }}>{'</>'}</div>
-          <div className="absolute bottom-20 left-20 text-5xl" style={{ color: colors.secondary }}>{'()'}</div>
-          <div className="absolute bottom-10 right-10 text-3xl" style={{ color: colors.accent }}>{';'}</div>
+        {/* Enhanced tech-themed background with mobile optimization */}
+        <div className="absolute inset-0 z-0 opacity-10 overflow-hidden">
+          <motion.div
+            className={`absolute ${isMobile ? 'top-5 left-5 text-4xl' : 'top-10 left-10 text-6xl'}`}
+            style={{ color: colors.secondary }}
+            animate={{
+              rotate: [0, 5, -5, 0],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            {'{'}
+          </motion.div>
+          <motion.div
+            className={`absolute ${isMobile ? 'top-10 right-10 text-3xl' : 'top-20 right-20 text-4xl'}`}
+            style={{ color: colors.accent }}
+            animate={{
+              rotate: [0, -5, 5, 0],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1
+            }}
+          >
+            {'</>'}
+          </motion.div>
+          <motion.div
+            className={`absolute ${isMobile ? 'bottom-20 left-10 text-4xl' : 'bottom-20 left-20 text-5xl'}`}
+            style={{ color: colors.secondary }}
+            animate={{
+              y: [0, -10, 0],
+              opacity: [0.1, 0.3, 0.1]
+            }}
+            transition={{
+              duration: 2.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 2
+            }}
+          >
+            {'()'}
+          </motion.div>
+          <motion.div
+            className={`absolute ${isMobile ? 'bottom-5 right-5 text-2xl' : 'bottom-10 right-10 text-3xl'}`}
+            style={{ color: colors.accent }}
+            animate={{
+              rotate: [0, 10, -10, 0],
+              scale: [1, 0.9, 1.1, 1]
+            }}
+            transition={{
+              duration: 3.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.5
+            }}
+          >
+            {';'}
+          </motion.div>
+
+          {/* Additional floating elements for larger screens */}
+          {!isMobile && (
+            <>
+              <motion.div
+                className="absolute top-1/3 left-1/4 text-2xl opacity-5"
+                style={{ color: colors.secondary }}
+                animate={{
+                  y: [0, -20, 0],
+                  x: [0, 10, 0],
+                  rotate: [0, 180, 360]
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              >
+                ⚡
+              </motion.div>
+              <motion.div
+                className="absolute top-2/3 right-1/3 text-2xl opacity-5"
+                style={{ color: colors.accent }}
+                animate={{
+                  y: [0, 15, 0],
+                  x: [0, -15, 0],
+                  scale: [1, 1.3, 1]
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 3
+                }}
+              >
+                💻
+              </motion.div>
+            </>
+          )}
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 z-10 relative">
@@ -441,25 +539,83 @@ export default function Home() {
             </motion.div>
 
             <motion.h1
-              className={`font-bold mb-6 ${
-                screenSize === 'xs' ? 'text-2xl' :
-                screenSize === 'sm' ? 'text-3xl' :
+              className={`font-bold mb-6 leading-tight ${
+                screenSize === 'xs' ? 'text-2xl mobile-text-2xl' :
+                screenSize === 'sm' ? 'text-3xl mobile-text-3xl' :
                 screenSize === 'md' ? 'text-4xl' :
                 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl'
               }`}
               style={{
-                color: colors.foreground,
-                fontFamily: 'var(--font-display)'
+                fontFamily: 'var(--font-display)',
+                textShadow: `0 0 30px ${colors.secondary}20`,
               }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              initial={{ opacity: 0, y: 30, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{
+                duration: 1,
+                delay: 0.2,
+                type: "spring",
+                stiffness: 100
+              }}
             >
-              <span style={{ color: colors.foreground }}>Osama</span>
-              <span style={{ color: colors.secondary }}>.</span>
-              <span style={{ color: colors.foreground }}>Hashmi</span>
-              <span style={{ color: colors.accent }}>()</span>
-              <span style={{ color: colors.secondary, fontFamily: 'var(--font-mono)' }}> // Full Stack Developer</span>
+              <motion.span
+                style={{ color: colors.foreground }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                Osama
+              </motion.span>
+              <motion.span
+                style={{ color: colors.secondary }}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.7, type: "spring", stiffness: 200 }}
+              >
+                .
+              </motion.span>
+              <motion.span
+                style={{ color: colors.foreground }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+              >
+                Hashmi
+              </motion.span>
+              <motion.span
+                style={{ color: colors.accent }}
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 1, type: "spring", stiffness: 150 }}
+                whileHover={{
+                  scale: 1.2,
+                  rotate: 10,
+                  color: colors.secondary
+                }}
+              >
+                ()
+              </motion.span>
+              <motion.span
+                style={{
+                  color: colors.secondary,
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: screenSize === 'xs' ? '0.6em' :
+                           screenSize === 'sm' ? '0.7em' : '0.8em'
+                }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.2 }}
+                className="block sm:inline"
+              >
+                {isMobile ? (
+                  <>
+                    <br />
+                    <span className="text-sm">// Full Stack Developer</span>
+                  </>
+                ) : (
+                  ' // Full Stack Developer'
+                )}
+              </motion.span>
             </motion.h1>
             
             {/* Developer Terminal */}
@@ -473,52 +629,88 @@ export default function Home() {
             </motion.div>
             
             <motion.div
-              className="flex flex-wrap gap-4"
+              className={`flex flex-wrap gap-4 ${isMobile ? 'justify-center' : 'justify-start'}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
+              transition={{ delay: 1.4 }}
             >
               <motion.button
-                className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all"
+                className={`flex items-center gap-2 rounded-xl font-semibold transition-all glass ${
+                  isMobile ? 'px-4 py-2 text-sm' : 'px-6 py-3'
+                }`}
                 style={{
-                  backgroundColor: colors.secondary,
+                  background: `linear-gradient(135deg, ${colors.secondary}, ${colors.secondary}90)`,
                   color: colors.primary,
+                  boxShadow: `0 8px 32px ${colors.secondary}30`,
+                  border: `1px solid ${colors.secondary}60`,
                 }}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{
+                  scale: 1.05,
+                  y: -2,
+                  boxShadow: `0 12px 40px ${colors.secondary}40`,
+                  background: `linear-gradient(135deg, ${colors.secondary}90, ${colors.secondary})`
+                }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.5 }}
               >
-                <Code size={18} />
-                View Projects
+                <Code size={isMobile ? 16 : 18} />
+                <span className="font-display">View Projects</span>
               </motion.button>
 
               <motion.button
-                className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all"
+                className={`flex items-center gap-2 rounded-xl font-semibold transition-all glass ${
+                  isMobile ? 'px-4 py-2 text-sm' : 'px-6 py-3'
+                }`}
                 style={{
-                  backgroundColor: colors.accent,
-                  color: colors.primary,
+                  background: `linear-gradient(135deg, ${colors.accent}, ${colors.accent}90)`,
+                  color: 'white',
+                  boxShadow: `0 8px 32px ${colors.accent}30`,
+                  border: `1px solid ${colors.accent}60`,
                 }}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{
+                  scale: 1.05,
+                  y: -2,
+                  boxShadow: `0 12px 40px ${colors.accent}40`,
+                  background: `linear-gradient(135deg, ${colors.accent}90, ${colors.accent})`
+                }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.6 }}
               >
-                <Rocket size={18} />
-                Let's Connect
+                <Rocket size={isMobile ? 16 : 18} />
+                <span className="font-display">Let's Connect</span>
               </motion.button>
 
               <motion.button
-                className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium border transition-all"
+                className={`flex items-center gap-2 rounded-xl font-semibold border transition-all glass-dark ${
+                  isMobile ? 'px-4 py-2 text-sm' : 'px-6 py-3'
+                }`}
                 style={{
                   backgroundColor: 'transparent',
                   color: colors.foreground,
                   borderColor: colors.border,
+                  boxShadow: `0 4px 16px ${colors.foreground}10`,
                 }}
-                whileHover={{ scale: 1.05, backgroundColor: colors.muted }}
+                whileHover={{
+                  scale: 1.05,
+                  y: -2,
+                  backgroundColor: colors.muted,
+                  borderColor: colors.secondary,
+                  boxShadow: `0 8px 24px ${colors.secondary}20`
+                }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => window.open('https://github.com/OSAMA-tec', '_blank')}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.7 }}
               >
-                <Github size={18} />
-                GitHub
+                <Github size={isMobile ? 16 : 18} />
+                <span className="font-display">GitHub</span>
               </motion.button>
             </motion.div>
           </div>
