@@ -5,11 +5,15 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Eye, Layers, Code, Database, Mail, Github, Linkedin, Twitter, X,
   MessageSquare, ChevronsRight, Terminal, Cpu, GitBranch, Coffee, Zap,
-  ChevronDown, Sparkles, Sun, Moon, ExternalLink
+  ChevronDown, Sparkles, Sun, Moon, ExternalLink, Rocket, Star
 } from "lucide-react";
 import { projectsData } from "@/data/projectsData";
 import { useTheme } from "@/hooks/use-theme";
 import ParticleSystem from "@/components/ParticleSystem";
+import EnhancedButton from "@/components/EnhancedButton";
+import EnhancedCard from "@/components/EnhancedCard";
+import EnhancedLoader from "@/components/EnhancedLoader";
+import BackgroundEffects from "@/components/BackgroundEffects";
 import { fadeInUp, staggerContainer, staggerItem, hoverLift } from "@/lib/animations";
 
 // Code animation component for developer-themed sections
@@ -234,104 +238,120 @@ function ProjectCard({
   );
 }
 
-// Skill card component with improved animations
-function SkillCard({ 
-  title, 
-  icon, 
-  skills, 
-  delay = 0 
-}: { 
-  title: string; 
-  icon: React.ReactNode; 
+// Enhanced skill card component with improved animations
+function SkillCard({
+  title,
+  icon,
+  skills,
+  delay = 0
+}: {
+  title: string;
+  icon: React.ReactNode;
   skills: { name: string; level: string; percentage: number; color: string }[];
   delay?: number;
 }) {
   const isMobile = useIsMobile();
-  
+  const { getThemeColors, theme } = useTheme();
+  const colors = getThemeColors(theme);
+
+  const header = (
+    <div className="relative">
+      <div className="absolute -top-20 -left-20 w-40 h-40 rounded-full filter blur-3xl opacity-60"
+           style={{ backgroundColor: `${colors.secondary}20` }}></div>
+      <div className="flex items-center relative z-10">
+        <div className="p-3 rounded-lg mr-4" style={{ backgroundColor: `${colors.secondary}10` }}>
+          {icon}
+        </div>
+        <div>
+          <div className="font-mono text-xs" style={{ color: colors.accent }}># category</div>
+          <h3 className="text-xl font-bold" style={{ color: colors.foreground }}>{title}</h3>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <motion.div
-      className="perspective-1000"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: isMobile ? 0.1 : delay }}
       viewport={{ once: true, margin: "-50px" }}
     >
-      <motion.div
-        className="bg-gradient-to-br from-[#1E1E2A]/90 to-[#0a192f]/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-2xl border border-[#64ffda]/20 h-full transform"
-        whileHover={{ translateY: -8, rotateX: 5, rotateY: 5 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      <EnhancedCard
+        variant="glow"
+        hover3D={true}
+        gradient={true}
+        header={header}
+        className="h-full"
       >
-        {/* Header with glow effect */}
-        <div className="relative">
-          <div className="absolute -top-20 -left-20 w-40 h-40 bg-[#64ffda]/20 rounded-full filter blur-3xl opacity-60"></div>
-          <div className="p-6 relative z-10 border-b border-[#64ffda]/10">
-            <div className="flex items-center">
-              <div className="p-3 bg-[#64ffda]/10 rounded-lg mr-4">
-                {icon}
+        <div className="space-y-5">
+          {skills.map((skill, skillIndex) => (
+            <motion.div
+              key={skillIndex}
+              className="group"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: isMobile ? 0.1 : 0.3 + skillIndex * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center">
+                  <span
+                    className="font-medium group-hover:transition-colors duration-300"
+                    style={{
+                      color: colors.foreground,
+                    }}
+                  >
+                    {skill.name}
+                  </span>
+                  <span
+                    className="ml-2 px-2 py-0.5 text-xs rounded-full"
+                    style={{
+                      backgroundColor: `${colors.secondary}10`,
+                      color: colors.secondary
+                    }}
+                  >
+                    {skill.level}
+                  </span>
+                </div>
+                <span className="font-mono text-sm" style={{ color: colors.accent }}>
+                  {skill.percentage}%
+                </span>
               </div>
-              <div>
-                <div className="font-mono text-xs text-[#8b5cf6]"># category</div>
-                <h3 className="text-xl font-bold text-[#e6f1ff]">{title}</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Skills list with enhanced visuals */}
-        <div className="p-6">
-          <div className="space-y-5">
-            {skills.map((skill, skillIndex) => (
-              <motion.div 
-                key={skillIndex}
-                className="group"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: isMobile ? 0.1 : 0.3 + skillIndex * 0.1 }}
-                viewport={{ once: true }}
+
+              <div
+                className="h-2.5 rounded-full overflow-hidden relative"
+                style={{ backgroundColor: colors.muted }}
               >
-                <div className="flex justify-between items-center mb-2">
-                  <div className="flex items-center">
-                    <span className="text-[#e6f1ff] font-medium group-hover:text-[#64ffda] transition-colors duration-300">
-                      {skill.name}
-                    </span>
-                    <span className="ml-2 px-2 py-0.5 text-xs rounded-full bg-[rgba(100,255,218,0.1)] text-[#64ffda]">
-                      {skill.level}
-                    </span>
-                  </div>
-                  <span className="text-[#8b5cf6] font-mono text-sm">{skill.percentage}%</span>
-                </div>
-                
-                <div className="h-2.5 rounded-full bg-[#1E1E2A] overflow-hidden relative">
-                  <motion.div 
-                    className="h-full rounded-full absolute top-0 left-0"
-                    style={{ backgroundColor: skill.color, width: `${skill.percentage}%` }}
-                    initial={{ width: 0, opacity: 0.5 }}
-                    whileInView={{ width: `${skill.percentage}%`, opacity: 1 }}
-                    transition={{ duration: 1.2, delay: isMobile ? 0.1 : skillIndex * 0.1, ease: "easeOut" }}
-                    viewport={{ once: true }}
-                  />
-                  
-                  {/* Animated glow effect */}
-                  <motion.div
-                    className="absolute top-0 bottom-0 w-20 bg-white/20 skew-x-30 -translate-x-20"
-                    animate={{
-                      translateX: ["0%", "100%"],
-                    }}
-                    transition={{
-                      duration: 2,
-                      ease: "easeInOut",
-                      delay: 1 + skillIndex * 0.2,
-                      repeat: Infinity,
-                      repeatDelay: 5
-                    }}
-                    style={{ filter: "blur(8px)" }}
-                  />
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                <motion.div
+                  className="h-full rounded-full absolute top-0 left-0"
+                  style={{ backgroundColor: skill.color }}
+                  initial={{ width: 0, opacity: 0.5 }}
+                  whileInView={{ width: `${skill.percentage}%`, opacity: 1 }}
+                  transition={{ duration: 1.2, delay: isMobile ? 0.1 : skillIndex * 0.1, ease: "easeOut" }}
+                  viewport={{ once: true }}
+                />
+
+                {/* Enhanced glow effect */}
+                <motion.div
+                  className="absolute top-0 bottom-0 w-20 bg-white/20 skew-x-30 -translate-x-20"
+                  animate={{
+                    translateX: ["0%", "100%"],
+                  }}
+                  transition={{
+                    duration: 2,
+                    ease: "easeInOut",
+                    delay: 1 + skillIndex * 0.2,
+                    repeat: Infinity,
+                    repeatDelay: 5
+                  }}
+                  style={{ filter: "blur(8px)" }}
+                />
+              </div>
+            </motion.div>
+          ))}
         </div>
-      </motion.div>
+      </EnhancedCard>
     </motion.div>
   );
 }
@@ -377,13 +397,23 @@ export default function Home() {
 
   return (
     <main className="relative">
+      {/* Enhanced Background Effects */}
+      <BackgroundEffects
+        variant="particles"
+        intensity={isMobile ? 'low' : 'medium'}
+        interactive={true}
+      />
+
       {/* Hero Section - Developer Themed */}
       <section id="home" className="min-h-screen flex flex-col justify-center pt-16 relative overflow-hidden">
         {/* Enhanced particle system background */}
         <ParticleSystem
-          particleCount={isMobile ? 30 : 50}
+          particleCount={isMobile ? 20 : 40}
           interactive={true}
           className="opacity-60"
+          showTrails={false}
+          performance={isMobile ? 'low' : 'medium'}
+          enableGlow={true}
         />
         
         {/* Animated code background - optimized rendering */}
@@ -552,61 +582,35 @@ export default function Home() {
               animate="visible"
               transition={{ delay: 0.6 }}
             >
-              <motion.a
-                href="#projects"
-                className="group relative px-6 py-3 border-2 rounded-md overflow-hidden flex items-center gap-2"
-                style={{
-                  borderColor: colors.secondary,
-                  color: colors.secondary
-                }}
-                variants={hoverLift}
-                initial="rest"
-                whileHover="hover"
+              <EnhancedButton
+                variant="secondary"
+                size="lg"
+                icon={<Code size={18} />}
+                glow={true}
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                <motion.div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{
-                    background: `linear-gradient(to right, ${colors.secondary}10, ${colors.accent}10)`
-                  }}
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: "0%" }}
-                  transition={{ duration: 0.4 }}
-                />
-                <Code size={18} />
-                <span>View Projects</span>
-                <motion.div
-                  className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                  initial={{ x: -5 }}
-                  whileHover={{ x: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ChevronsRight size={14} />
-                </motion.div>
-              </motion.a>
+                View Projects
+              </EnhancedButton>
 
-              <motion.a
-                href="#contact"
-                className="group relative px-6 py-3 rounded-md transition-all duration-500 flex items-center gap-2 font-medium shadow-lg"
-                style={{
-                  background: colors.gradient,
-                  color: colors.primary,
-                  boxShadow: `0 4px 20px ${colors.secondary}20`
-                }}
-                variants={hoverLift}
-                initial="rest"
-                whileHover="hover"
+              <EnhancedButton
+                variant="primary"
+                size="lg"
+                icon={<Rocket size={18} />}
+                magnetic={true}
+                glow={true}
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                <MessageSquare size={18} />
-                <span>Contact Me</span>
-                <motion.div
-                  className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                  initial={{ x: -5 }}
-                  whileHover={{ x: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ChevronsRight size={14} />
-                </motion.div>
-              </motion.a>
+                Let's Connect
+              </EnhancedButton>
+
+              <EnhancedButton
+                variant="ghost"
+                size="lg"
+                icon={<Github size={18} />}
+                onClick={() => window.open('https://github.com/OSAMA-tec', '_blank')}
+              >
+                GitHub
+              </EnhancedButton>
             </motion.div>
           </div>
         </div>

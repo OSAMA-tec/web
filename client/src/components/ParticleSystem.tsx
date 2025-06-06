@@ -19,12 +19,18 @@ interface ParticleSystemProps {
   particleCount?: number;
   interactive?: boolean;
   className?: string;
+  showTrails?: boolean;
+  performance?: 'high' | 'medium' | 'low';
+  enableGlow?: boolean;
 }
 
-export default function ParticleSystem({ 
-  particleCount = 50, 
+export default function ParticleSystem({
+  particleCount = 30,
   interactive = true,
-  className = ""
+  className = "",
+  showTrails = false,
+  performance = 'medium',
+  enableGlow = true
 }: ParticleSystemProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
@@ -106,13 +112,41 @@ export default function ParticleSystem({
           }
         }
 
-        // Draw particle
+        // Draw particle with enhanced effects
         ctx.save();
         ctx.globalAlpha = particle.opacity;
+
+        if (enableGlow && performance !== 'low') {
+          // Add glow effect
+          const gradient = ctx.createRadialGradient(
+            particle.x, particle.y, 0,
+            particle.x, particle.y, particle.size * 3
+          );
+          gradient.addColorStop(0, particle.color);
+          gradient.addColorStop(0.5, particle.color + '80');
+          gradient.addColorStop(1, particle.color + '00');
+
+          ctx.fillStyle = gradient;
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.size * 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Draw main particle
         ctx.fillStyle = particle.color;
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fill();
+
+        // Add sparkle effect for high performance mode
+        if (performance === 'high' && Math.random() > 0.95) {
+          ctx.fillStyle = '#ffffff';
+          ctx.globalAlpha = 0.8;
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.size * 0.3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
         ctx.restore();
       });
 
