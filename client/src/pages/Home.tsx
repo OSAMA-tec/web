@@ -2,13 +2,15 @@ import { useEffect, useState, useRef } from "react";
 import useScrollReveal from "@/lib/useScrollReveal";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { 
-  Eye, Layers, Code, Database, Mail, Github, Linkedin, Twitter, X, 
+import {
+  Eye, Layers, Code, Database, Mail, Github, Linkedin, Twitter, X,
   MessageSquare, ChevronsRight, Terminal, Cpu, GitBranch, Coffee, Zap,
   ChevronDown, Sparkles, Sun, Moon, ExternalLink
 } from "lucide-react";
 import { projectsData } from "@/data/projectsData";
 import { useTheme } from "@/hooks/use-theme";
+import ParticleSystem from "@/components/ParticleSystem";
+import { fadeInUp, staggerContainer, staggerItem, hoverLift } from "@/lib/animations";
 
 // Code animation component for developer-themed sections
 function CodeBlock({ 
@@ -341,24 +343,13 @@ export default function Home() {
   const isMobile = useIsMobile();
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
-  
-  // Floating particles
-  const [particles, setParticles] = useState<Array<{x: number, y: number, size: number, color: string, speed: number}>>([]);
-  
+  const { theme, getThemeColors } = useTheme();
+
+  const colors = getThemeColors(theme);
+
   // Set title and meta description on mount
   useEffect(() => {
     document.title = "Osama Hashmi - Full Stack Developer";
-    
-    // Generate floating particles
-    const newParticles = Array.from({ length: 30 }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      size: Math.random() * 3 + 1,
-      color: Math.random() > 0.5 ? '#64ffda' : '#8b5cf6',
-      speed: Math.random() * 0.2 + 0.1
-    }));
-    
-    setParticles(newParticles);
   }, []);
 
   // Initialize scroll animations
@@ -388,34 +379,12 @@ export default function Home() {
     <main className="relative">
       {/* Hero Section - Developer Themed */}
       <section id="home" className="min-h-screen flex flex-col justify-center pt-16 relative overflow-hidden">
-        {/* Floating particles background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {particles.map((particle, index) => (
-            <motion.div
-              key={index}
-              className="absolute rounded-full"
-              style={{
-                width: particle.size,
-                height: particle.size,
-                backgroundColor: particle.color,
-                left: particle.x,
-                top: particle.y,
-                filter: 'blur(1px)',
-                opacity: 0.6,
-              }}
-              animate={{
-                y: [0, -20, 0],
-                opacity: [0.2, 0.6, 0.2]
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-                ease: "easeInOut"
-              }}
-            />
-          ))}
-        </div>
+        {/* Enhanced particle system background */}
+        <ParticleSystem
+          particleCount={isMobile ? 30 : 50}
+          interactive={true}
+          className="opacity-60"
+        />
         
         {/* Animated code background - optimized rendering */}
         <div className="absolute inset-0 overflow-hidden opacity-5 z-0">
@@ -468,115 +437,137 @@ export default function Home() {
 
         <div className="container mx-auto px-4 sm:px-6 z-10 relative">
           <div className="max-w-3xl mx-auto">
-            <motion.div 
-              className="inline-block font-mono mb-4 text-sm text-[#64ffda] bg-[#1E1E2A]/80 px-3 py-1 rounded-md border-l-2 border-[#64ffda]"
+            <motion.div
+              className="inline-block font-mono mb-4 text-sm px-3 py-1 rounded-md border-l-2"
+              style={{
+                color: colors.secondary,
+                backgroundColor: colors.muted,
+                borderColor: colors.secondary
+              }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
               $ whoami
             </motion.div>
-            
-            <motion.h1 
+
+            <motion.h1
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <span className="text-[#e6f1ff]">Osama</span>
-              <span className="text-[#64ffda]">.</span>
-              <span className="text-[#e6f1ff]">Hashmi</span>
-              <span className="text-[#8b5cf6]">()</span>
-              <motion.span 
-                className="inline-block text-[#64ffda]"
-                animate={{ 
+              <span style={{ color: colors.foreground }}>Osama</span>
+              <span style={{ color: colors.secondary }}>.</span>
+              <span style={{ color: colors.foreground }}>Hashmi</span>
+              <span style={{ color: colors.accent }}>()</span>
+              <motion.span
+                className="inline-block"
+                style={{ color: colors.secondary }}
+                animate={{
                   opacity: [1, 0.5, 1],
                   scale: [1, 1.05, 1]
                 }}
-                transition={{ 
-                  duration: 2, 
+                transition={{
+                  duration: 2,
                   repeat: Infinity,
-                  repeatType: "reverse" 
+                  repeatType: "reverse"
                 }}
               >
                 <Sparkles className="inline-block w-8 h-8 ml-2" />
               </motion.span>
             </motion.h1>
             
-            <motion.div 
-              className="mb-8 font-mono text-[#e6f1ff]/70 text-base sm:text-lg bg-[#1E1E2A]/70 p-4 rounded-md border-l-2 border-[#64ffda] backdrop-blur-sm shadow-[0_5px_30px_rgba(100,255,218,0.15)]"
+            <motion.div
+              className="mb-8 font-mono text-base sm:text-lg p-4 rounded-md border-l-2 backdrop-blur-sm"
+              style={{
+                color: colors.foreground,
+                backgroundColor: colors.muted,
+                borderColor: colors.secondary,
+                boxShadow: `0 5px 30px ${colors.secondary}15`,
+                opacity: 0.9
+              }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
             >
               <div className="flex items-center">
-                <Terminal className="w-4 h-4 text-[#64ffda] mr-2 flex-shrink-0" />
+                <Terminal className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: colors.secondary }} />
                 <div className="flex flex-wrap items-center">
-                  <span className="text-[#8b5cf6] mr-2">const</span>
-                  <span className="text-[#64ffda]">role</span>
-                  <span className="mr-2"> = </span>
-                  <span className="text-[#e6f1ff]">"Full Stack Developer";</span>
+                  <span className="mr-2" style={{ color: colors.accent }}>const</span>
+                  <span style={{ color: colors.secondary }}>role</span>
+                  <span className="mr-2" style={{ color: colors.foreground }}> = </span>
+                  <span style={{ color: colors.foreground }}>"Full Stack Developer";</span>
                 </div>
               </div>
               <div className="flex items-start mt-2">
-                <Terminal className="w-4 h-4 text-[#64ffda] mr-2 mt-1 flex-shrink-0" />
+                <Terminal className="w-4 h-4 mr-2 mt-1 flex-shrink-0" style={{ color: colors.secondary }} />
                 <div>
                   <div className="flex flex-wrap">
-                    <span className="text-[#8b5cf6] mr-2">const</span>
-                    <span className="text-[#64ffda]">description</span>
-                    <span className="mr-2"> = </span>
-                    <span className="text-[#e6f1ff]">`</span>
+                    <span className="mr-2" style={{ color: colors.accent }}>const</span>
+                    <span style={{ color: colors.secondary }}>description</span>
+                    <span className="mr-2" style={{ color: colors.foreground }}> = </span>
+                    <span style={{ color: colors.foreground }}>`</span>
                   </div>
-                  <div className="pl-4 sm:pl-8 border-l border-[#8b5cf6]/30 my-2">
-                    <span ref={typingRef} className="text-[#e6f1ff]/90 break-words">{typedText}</span>
-                    <span className="animate-pulse text-[#64ffda]">|</span>
+                  <div className="pl-4 sm:pl-8 border-l my-2" style={{ borderColor: `${colors.accent}30` }}>
+                    <span ref={typingRef} className="break-words" style={{ color: `${colors.foreground}90` }}>{typedText}</span>
+                    <span className="animate-pulse" style={{ color: colors.secondary }}>|</span>
                   </div>
                   <div>
-                    <span className="text-[#e6f1ff]">`;</span>
+                    <span style={{ color: colors.foreground }}>`;</span>
                   </div>
                 </div>
               </div>
               <div className="flex flex-wrap items-center mt-2">
-                <Terminal className="w-4 h-4 text-[#64ffda] mr-2 flex-shrink-0" />
-                <span className="text-[#8b5cf6] mr-2">const</span>
-                <span className="text-[#64ffda]">skills</span>
-                <span className="mr-2"> = </span>
-                <span className="text-[#e6f1ff]">[</span>
-                <motion.span 
-                  className="text-[#ff9580]"
+                <Terminal className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: colors.secondary }} />
+                <span className="mr-2" style={{ color: colors.accent }}>const</span>
+                <span style={{ color: colors.secondary }}>skills</span>
+                <span className="mr-2" style={{ color: colors.foreground }}> = </span>
+                <span style={{ color: colors.foreground }}>[</span>
+                <motion.span
+                  style={{ color: colors.secondary }}
                   animate={{ opacity: [1, 0.5, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >"React"</motion.span>
-                <span className="text-[#e6f1ff]">, </span>
-                <motion.span 
-                  className="text-[#ffde80]"
+                <span style={{ color: colors.foreground }}>, </span>
+                <motion.span
+                  style={{ color: colors.accent }}
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >"Node.js"</motion.span>
-                <span className="text-[#e6f1ff]">, </span>
-                <motion.span 
-                  className="text-[#80ffea]"
+                <span style={{ color: colors.foreground }}>, </span>
+                <motion.span
+                  style={{ color: colors.secondary }}
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                >"Three.js"</motion.span>
-                <span className="text-[#e6f1ff]">];</span>
+                >"TypeScript"</motion.span>
+                <span style={{ color: colors.foreground }}>];</span>
               </div>
             </motion.div>
             
-            <motion.div 
+            <motion.div
               className="flex flex-wrap gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
+              variants={fadeInUp}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: 0.6 }}
             >
-              <motion.a 
-                href="#projects" 
-                className="group relative px-6 py-3 border-2 border-[#64ffda] text-[#64ffda] rounded-md overflow-hidden flex items-center gap-2"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+              <motion.a
+                href="#projects"
+                className="group relative px-6 py-3 border-2 rounded-md overflow-hidden flex items-center gap-2"
+                style={{
+                  borderColor: colors.secondary,
+                  color: colors.secondary
+                }}
+                variants={hoverLift}
+                initial="rest"
+                whileHover="hover"
               >
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-[#64ffda]/10 to-[#8b5cf6]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                <motion.div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: `linear-gradient(to right, ${colors.secondary}10, ${colors.accent}10)`
+                  }}
                   initial={{ x: "-100%" }}
                   whileHover={{ x: "0%" }}
                   transition={{ duration: 0.4 }}
@@ -592,12 +583,18 @@ export default function Home() {
                   <ChevronsRight size={14} />
                 </motion.div>
               </motion.a>
-              
-              <motion.a 
-                href="#contact" 
-                className="group relative px-6 py-3 bg-gradient-to-r from-[#64ffda] to-[#64ffda] bg-size-200 bg-pos-0 hover:bg-pos-100 text-[#0a192f] rounded-md transition-all duration-500 flex items-center gap-2 font-medium shadow-lg shadow-[#64ffda]/20"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+
+              <motion.a
+                href="#contact"
+                className="group relative px-6 py-3 rounded-md transition-all duration-500 flex items-center gap-2 font-medium shadow-lg"
+                style={{
+                  background: colors.gradient,
+                  color: colors.primary,
+                  boxShadow: `0 4px 20px ${colors.secondary}20`
+                }}
+                variants={hoverLift}
+                initial="rest"
+                whileHover="hover"
               >
                 <MessageSquare size={18} />
                 <span>Contact Me</span>
@@ -614,12 +611,13 @@ export default function Home() {
           </div>
         </div>
         
-        <motion.div 
+        <motion.div
           className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
           style={{ opacity }}
         >
-          <motion.div 
-            className="text-[#e6f1ff]/60 mb-2 text-sm font-mono"
+          <motion.div
+            className="mb-2 text-sm font-mono"
+            style={{ color: `${colors.foreground}60` }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.8 }}
@@ -637,7 +635,7 @@ export default function Home() {
               repeatType: "loop",
             }}
           >
-            <ChevronDown className="w-6 h-6 text-[#64ffda]" />
+            <ChevronDown className="w-6 h-6" style={{ color: colors.secondary }} />
           </motion.div>
         </motion.div>
       </section>
@@ -1308,13 +1306,25 @@ export default function Home() {
       </section>
       
       {/* Footer */}
-      <footer className="py-8 bg-[#0a192f] border-t border-[#1E1E2A]">
+      <footer
+        className="py-8 border-t"
+        style={{
+          backgroundColor: colors.primary,
+          borderColor: colors.border
+        }}
+      >
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-[#e6f1ff]/60 mb-4 md:mb-0">
+            <div
+              className="mb-4 md:mb-0"
+              style={{ color: `${colors.foreground}60` }}
+            >
               &copy; {new Date().getFullYear()} Osama Hashmi. All rights reserved.
             </div>
-            <div className="text-[#e6f1ff]/60 font-mono text-sm">
+            <div
+              className="font-mono text-sm"
+              style={{ color: `${colors.foreground}60` }}
+            >
               <span className="code-comment">// Built with React & ❤️</span>
             </div>
           </div>

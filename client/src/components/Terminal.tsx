@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
+import { useTheme } from '@/hooks/use-theme';
 
 interface TerminalProps {
   isActive: boolean;
@@ -21,6 +22,8 @@ export default function Terminal({ isActive, onClose, onNavigate }: TerminalProp
 
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { theme, getThemeColors } = useTheme();
+  const colors = getThemeColors(theme);
   
   // Auto focus the input when terminal opens
   useEffect(() => {

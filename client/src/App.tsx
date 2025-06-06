@@ -6,6 +6,7 @@ import Home from "@/pages/Home";
 import { useState, useEffect } from "react";
 import Terminal from "./components/Terminal";
 import SocialFloaters from "./components/SocialFloaters";
+import ThemeSelector from "./components/ThemeSelector";
 import { useLocation } from "wouter";
 import { ThemeProvider } from "./hooks/use-theme";
 
@@ -78,14 +79,31 @@ function App() {
         }} 
       />
       
-      {/* Floating command hint */}
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-[#1E1E2A]/80 text-[#e6f1ff]/70 px-3 py-1 rounded-full text-sm backdrop-blur-md z-30">
-        Press <kbd className="bg-[#64ffda]/20 text-[#64ffda] px-2 py-0.5 rounded mx-1 font-mono">`</kbd> for terminal
+      {/* Floating command hint - will be updated to use theme colors */}
+      <div
+        className="fixed bottom-4 left-1/2 transform -translate-x-1/2 px-3 py-1 rounded-full text-sm backdrop-blur-md z-30"
+        style={{
+          backgroundColor: 'var(--theme-muted)',
+          color: 'var(--theme-foreground)',
+          opacity: 0.8
+        }}
+      >
+        Press <kbd
+          className="px-2 py-0.5 rounded mx-1 font-mono"
+          style={{
+            backgroundColor: 'var(--theme-secondary)',
+            color: 'var(--theme-primary)',
+            opacity: 0.8
+          }}
+        >`</kbd> for terminal
       </div>
       
+      {/* Theme selector */}
+      <ThemeSelector />
+
       {/* Floating social links */}
       <SocialFloaters />
-      
+
       {/* Main content */}
       <Router />
     </TooltipProvider>
